@@ -3,4 +3,4 @@
 
 void init_frontend();
 
-#endif //UI_H
+#endif

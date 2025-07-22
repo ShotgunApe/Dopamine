@@ -13,8 +13,8 @@ endif()
 project(debug_print)
 include("${VITASDK}/share/vita.cmake" REQUIRED)
 
-set(VITA_APP_NAME "Print example")
-set(VITA_TITLEID  "VSDK00004")
+set(VITA_APP_NAME "Dopamine")
+set(VITA_TITLEID  "0C8H11NO2")
 set(VITA_VERSION  "01.00")
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
