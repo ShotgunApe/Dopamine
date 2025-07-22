@@ -1,0 +1,3 @@
+[submodule "deps/doctest"]
+	path = deps/doctest
+	url = git@github.com:doctest/doctest.git
