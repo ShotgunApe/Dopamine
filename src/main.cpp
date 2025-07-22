@@ -1,11 +1,8 @@
 #include <psp2/kernel/processmgr.h>
-#include "ui/debugScreen.h"
-
-#define printf psvDebugScreenPrintf
+#include "ui/ui.h"
 
 int main(int argc, char *argv[]) {
-	psvDebugScreenInit();
-	printf("Dopamine\n");
+	init_frontend();
 
 	return 0;
 }

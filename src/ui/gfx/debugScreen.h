@@ -1,6 +1,7 @@
 #ifndef DEBUG_SCREEN_H
 #define DEBUG_SCREEN_H
 
+#include <stdint.h>
 #include "debugScreen_custom.h"
 
 typedef struct ColorState {

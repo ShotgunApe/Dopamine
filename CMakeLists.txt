@@ -25,8 +25,16 @@ include_directories(
 )
 
 add_executable(${PROJECT_NAME}
-  src/main.cpp
-  ../src/ui/debugScreen.c
+        src/main.cpp
+        src/emu/emu.cpp
+        src/emu/emu.h
+        src/emu/ee.cpp
+        src/emu/ee.h
+        src/ui/gfx/debugScreen.c
+        src/ui/filesys/file.cpp
+        src/ui/filesys/file.h
+        src/ui/ui.cpp
+        src/ui/ui.h
 )
 
 target_link_libraries(${PROJECT_NAME}
