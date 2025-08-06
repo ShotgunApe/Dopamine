@@ -1,6 +1,15 @@
 #ifndef UI_H
 #define UI_H
 
-void init_frontend();
+#include <vector>
+
+class Frontend
+{
+public:
+    void init_frontend();
+
+private:
+    std::vector<unsigned char> open_file;
+};
 
 #endif
