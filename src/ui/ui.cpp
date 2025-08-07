@@ -35,7 +35,7 @@ void Frontend::init_frontend() {
         printf("writing to memory success\n\n");
         printf("nbyte = %u\n\n",open_file.size());
 
-        for (size_t i = 0; i < std::min(open_file.size(), size_t(16)); ++i) {
+        for (size_t i = 0; i < std::min(open_file.size(), static_cast<size_t>(16)); ++i) {
             printf("%02X ", open_file[i]);
         }
     }
