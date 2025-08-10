@@ -2,8 +2,12 @@
 #include "ui/ui.h"
 
 int main(int argc, char *argv[]) {
+	// init ui
 	Frontend ui;
-	ui.init_frontend();
+	ui.initFrontend();
+	ui.selectFile();
+
+	// init emu obj (once made)
 
 	sceKernelDelayThread(3*1000000); // Wait for 3 seconds
 	sceKernelExitProcess(0);

@@ -5,12 +5,14 @@
 
 class File {
 public:
-    File() : open_file(100) {}
+    File();
+    ~File();
 
-    explicit File(const int initialValue) : open_file(5, initialValue) {}
+    std::vector<unsigned char> &getElf();
+    void setElf();
 
 private:
     std::vector<unsigned char> open_file;
 };
 
-#endif //FILE_H
+#endif

@@ -1,15 +1,19 @@
 #ifndef UI_H
 #define UI_H
 
-#include <vector>
+#include "filesys/file.h"
 
 class Frontend
 {
 public:
-    void init_frontend();
+    Frontend();
+    ~Frontend();
+
+    static void initFrontend();
+    void selectFile();
 
 private:
-    std::vector<unsigned char> open_file;
+    File elf_loader;
 };
 
 #endif
