@@ -13,7 +13,6 @@ File::File() : open_file(0) {
 File::~File() {
 }
 
-
 std::vector<unsigned char> &File::getElf() {
     return open_file;
 }
@@ -35,7 +34,7 @@ void File::setElf() {
 
     sceIoLseek(fd, 0, SCE_SEEK_SET); // Put ptr back at start now that we know how large file is
 
-    const SceSSize ba = sceIoRead(fd, open_file.data(), fs);
+    const SceSSize ba = sceIoRead(fd, open_file.data(), fs); // TODO: Possibly write directly to Emu class?
     if (ba != fs) {
         printf("writing to memory error, exiting\n");
         sceKernelExitProcess(1);
@@ -43,9 +42,5 @@ void File::setElf() {
     else {
         printf("writing to memory success\n\n");
         printf("nbyte = %u\n\n",open_file.size());
-
-        for (SceInt64 i = 0; i < fs; ++i) {
-            printf("%02X ", open_file[i]);
-        }
     }
 }

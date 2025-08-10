@@ -10,7 +10,7 @@ public:
     ~Frontend();
 
     static void initFrontend();
-    void selectFile();
+    File selectFile();
 
 private:
     File elf_loader;
