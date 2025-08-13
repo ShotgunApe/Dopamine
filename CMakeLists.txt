@@ -30,6 +30,8 @@ add_executable(${PROJECT_NAME}
         src/ui/gfx/debugScreen.c
         src/ui/filesys/file.cpp
         src/ui/ui.cpp
+
+        test/test_r5900.h
 )
 
 target_link_libraries(${PROJECT_NAME}
