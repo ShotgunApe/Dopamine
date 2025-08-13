@@ -1,7 +1,7 @@
 #ifndef UI_H
 #define UI_H
 
-#include "filesys/file.h"
+#include "file.h"
 
 class Frontend
 {

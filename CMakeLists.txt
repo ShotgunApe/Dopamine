@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   if(DEFINED ENV{VITASDK})
     set(CMAKE_TOOLCHAIN_FILE "$ENV{VITASDK}/share/vita.toolchain.cmake" CACHE PATH "toolchain file")
@@ -21,20 +19,17 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 include_directories(
-  ./deps/doctest/doctest
+        lib/doctest/doctest
+        include
 )
 
 add_executable(${PROJECT_NAME}
         src/main.cpp
         src/emu/emu.cpp
-        src/emu/emu.h
         src/emu/ee.cpp
-        src/emu/ee.h
         src/ui/gfx/debugScreen.c
         src/ui/filesys/file.cpp
-        src/ui/filesys/file.h
         src/ui/ui.cpp
-        src/ui/ui.h
 )
 
 target_link_libraries(${PROJECT_NAME}

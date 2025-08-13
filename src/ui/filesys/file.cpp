@@ -3,7 +3,7 @@
 #include <psp2/io/fcntl.h>
 #include <psp2/kernel/processmgr.h>
 
-#include "../gfx/debugScreen.h"
+#include "debugScreen.h"
 
 #define printf psvDebugScreenPrintf
 

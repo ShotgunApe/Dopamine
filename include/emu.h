@@ -1,7 +1,7 @@
 #ifndef EMU_H
 #define EMU_H
 
-#include "../ui/filesys/file.h"
+#include "file.h"
 
 #include <vector>
 

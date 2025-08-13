@@ -1,5 +1,5 @@
 #include "ui.h"
-#include "gfx/debugScreen.h"
+#include "debugScreen.h"
 
 #define printf psvDebugScreenPrintf
 
