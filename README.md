@@ -11,6 +11,5 @@
 
 ### Resources
 - Vita SDK [Samples](https://github.com/vitasdk/samples) for text rendering
-- [PCSX2](https://github.com/PCSX2/pcsx2) for CPU structs
-- DobieStation [docs](https://github.com/PSI-Rockin/DobieStation/wiki) for PS2 emulation
+- DobieStation [docs](https://github.com/PSI-Rockin/DobieStation/wiki) and [ps2tek](https://psi-rockin.github.io/ps2tek/) for PS2 info
 - [Vita3K](https://github.com/Vita3K/Vita3K/) for testing

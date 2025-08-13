@@ -14,6 +14,7 @@ public:
 
 private:
     std::vector<unsigned char> mem_map = std::vector<unsigned char>(0xFFFFFFFF); // why
+
 };
 
 #endif
