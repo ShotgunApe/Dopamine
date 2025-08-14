@@ -4,11 +4,8 @@
 #include "emu.h"
 
 TEST_CASE("Testing R5900") {
-    CHECK(0 == 1);
-}
-
-TEST_CASE("THIS WILL PASS") {
-    CHECK(1 == 1);
+    const Emu emu;
+    CHECK(emu.r5900.pc == 0x00000200);
 }
 
 #endif

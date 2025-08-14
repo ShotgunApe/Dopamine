@@ -31,9 +31,8 @@ int main(int argc, char *argv[]) {
 
 	// init emu
 	Emu emu;
-	emu.loadElf(selectedElf);
+	//emu.loadElf(selectedElf);
 
-	sceKernelDelayThread(3*1000000); // Wait for 3 seconds
 	sceKernelExitProcess(0);
 	return 0;
 }
