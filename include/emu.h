@@ -16,7 +16,7 @@ public:
     R5900 r5900;
 
 private:
-    std::vector<unsigned char> mem_map = std::vector<unsigned char>(0xFFFFFFFF); // why
+    std::vector<unsigned char> mem_map;
 };
 
 #endif

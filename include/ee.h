@@ -10,7 +10,7 @@ struct SceUInt128 {
 
 struct R5900 {
     // Special Registers
-    SceUInt32 pc = 0x00000200;
+    SceUInt32 pc = 0x00000100;
     SceUInt64 hi;
     SceUInt64 lo;
     SceUInt64 hi1;
