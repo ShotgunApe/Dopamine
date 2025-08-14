@@ -7,4 +7,8 @@ TEST_CASE("Testing R5900") {
     CHECK(1 == 1);
 }
 
+TEST_CASE("THIS WILL FAIL") {
+    CHECK(1 == 0);
+}
+
 #endif

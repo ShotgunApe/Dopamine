@@ -7,19 +7,26 @@
 #include "ui.h"
 #include "emu.h"
 
-#include "doctest.h"
+#include "doctest/doctest.h"
 #include "../test/test_r5900.h"
 
 int main(int argc, char *argv[]) {
+
+	// init ui
+	Frontend ui;
+	ui.initFrontend();
 
 	// run tests
 	doctest::Context context;
 	context.applyCommandLine(argc, argv);
 	int res = context.run();
 
-	// init ui
-	Frontend ui;
-	ui.initFrontend();
+	if (context.shouldExit()) {
+		// propagate the result of the tests
+		return res;
+	}
+
+	// select a file
 	File selectedElf = ui.selectFile();
 
 	// init emu
