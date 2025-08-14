@@ -4,11 +4,11 @@
 #include "emu.h"
 
 TEST_CASE("Testing R5900") {
-    CHECK(1 == 1);
+    CHECK(0 == 1);
 }
 
-TEST_CASE("THIS WILL FAIL") {
-    CHECK(1 == 0);
+TEST_CASE("THIS WILL PASS") {
+    CHECK(1 == 1);
 }
 
 #endif

@@ -2,6 +2,7 @@
 #include "debugScreen.h"
 
 #include <mutex>
+#include <cstring>
 
 #define printf psvDebugScreenPrintf
 
@@ -24,45 +25,45 @@ struct VitaListener : public IReporter
 
     void test_run_start() override {
         std::lock_guard<std::mutex> lock(mutex);
-        printf('[doctest] doctest version is "%d.%d.%d"\n', DOCTEST_VERSION_MAJOR, DOCTEST_VERSION_MINOR, DOCTEST_VERSION_PATCH);
+        printf("[doctest] doctest version is \"%d.%d.%d\"\n\n", DOCTEST_VERSION_MAJOR, DOCTEST_VERSION_MINOR, DOCTEST_VERSION_PATCH);
         printf("===============================================================================\n");
     }
 
     void test_run_end(const TestRunStats& stats) override {
         std::lock_guard<std::mutex> lock(mutex);
 
-        printf("===============================================================================\n\n");
-        printf("[doctest] test cases: %6d | %6d passed | %6d failed\n", stats.numTestCases, (stats.numTestCases - stats.numTestCasesFailed), stats.numTestCasesFailed);
-        printf("[doctest] assertions: %6d | %6d passed | %6d failed\n", stats.numAsserts, (stats.numAsserts - stats.numAssertsFailed), stats.numAssertsFailed);
+        printf("===============================================================================\n");
+        printf("[doctest] test cases: %4d | %4d passed | %4d failed\n", stats.numTestCases, (stats.numTestCases - stats.numTestCasesFailed), stats.numTestCasesFailed);
+        printf("[doctest] assertions: %4d | %4d passed | %4d failed\n", stats.numAsserts, (stats.numAsserts - stats.numAssertsFailed), stats.numAssertsFailed);
 
         if (stats.numTestCasesFailed > 0 || stats.numAssertsFailed > 0)
-            printf("Status: FAILURE!\n");
+            printf("[doctest] Status: FAILURE!\n\n");
         else
-            printf("Status: PASSED!\n");
+            printf("[doctest] Status: PASSED!\n\n");
     }
 
-    void test_case_start(const TestCaseData& in) override { tc = &in; }
+    void test_case_start(const TestCaseData& in) override {
+        tc = &in;
+
+        const char* filename = std::strrchr(in.m_file.c_str(), '/');
+        filename = filename ? filename + 1 : in.m_file.c_str();
+
+        printf("\n%s\n", filename);
+        if (tc)
+            printf("TEST CASE:  %s\n\n", tc->m_name);
+    }
 
     // called when a test case is reentered because of unfinished subcases
     void test_case_reenter(const TestCaseData& /*in*/) override {}
 
-    void test_case_end(const CurrentTestCaseStats& in) override {
-        if (in.failure_flags) {
-            printf("test case:  %s\n", tc->m_name);
-            printf("status:     FAILED\n");
-        }
-    }
+    void test_case_end(const CurrentTestCaseStats& in) override {}
 
     void test_case_exception(const TestCaseException& in) override {
         std::lock_guard<std::mutex> lock(mutex);
-        printf("test case:  %s\n", tc ? tc->m_name : "Unknown");
-        printf("exception:  %s\n", in.error_string);
-        printf("status:     FAILED due to exception\n");
     }
 
     void subcase_start(const SubcaseSignature& in) override {
         std::lock_guard<std::mutex> lock(mutex);
-        printf("  subcase:  %s\n", in.m_name);
     }
 
     void subcase_end() override {
@@ -76,14 +77,13 @@ struct VitaListener : public IReporter
 
         std::lock_guard<std::mutex> lock(mutex);
 
-        printf("line:       %d\n", in.m_line);
-        if (tc)
-            printf("test case:  %s\n", tc->m_name);
+        const char* filename = std::strrchr(in.m_file, '/');
+        filename = filename ? filename + 1 : in.m_file;
 
-        if (in.m_expr)
-            printf("expression: %s\n", in.m_expr);
-
-        printf("result:     %s\n", in.m_failed ? "FAILED" : "PASSED");
+        if (in.m_failed) {
+            printf("\n%s(%d) ERROR!\n", filename, in.m_line);
+            printf("    CHECK(%s)\n\n", in.m_expr);
+        }
     }
 
     void log_message(const MessageData& in) override {
