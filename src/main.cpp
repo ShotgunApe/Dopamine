@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
 	// run tests
 	doctest::Context context;
 	context.applyCommandLine(argc, argv);
-	int res = context.run();
+	const int res = context.run();
 
 	if (context.shouldExit()) {
 		// propagate the result of the tests
@@ -31,7 +31,7 @@ int main(int argc, char *argv[]) {
 
 	// init emu
 	Emu emu;
-	//emu.loadElf(selectedElf);
+	emu.loadElf(selectedElf);
 
 	sceKernelExitProcess(0);
 	return 0;

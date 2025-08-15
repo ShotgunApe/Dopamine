@@ -40,7 +40,6 @@ void File::setElf() {
         sceKernelExitProcess(1);
     }
     else {
-        printf("writing to memory success\n\n");
-        printf("nbyte = %u\n\n",open_file.size());
+        printf("%u bytes written to memory\n\n",open_file.size());
     }
 }
