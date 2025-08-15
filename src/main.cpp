@@ -33,6 +33,11 @@ int main(int argc, char *argv[]) {
 	Emu emu;
 	emu.loadElf(selectedElf);
 
+	//bool running;
+	//while (running) {
+	//	emu.process();
+	//}
+
 	sceKernelExitProcess(0);
 	return 0;
 }
