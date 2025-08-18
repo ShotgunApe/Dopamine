@@ -3,7 +3,7 @@
 <p align=center> Experimental PS2 Emulator for PS Vita </p>
 
 ### Getting Started
-1. `sudo apt-get install make git openssh-client bzip2 wget curl xz-utils cmake python3`
+1. `sudo apt-get install make git openssh-client bzip2 wget curl xz-utils ninja-build cmake python3`
 2. install [Vita SDK](https://vitasdk.org/) and add it to your `$PATH`
 3. `git clone --recursive git@github.com:ShotgunApe/Dopamine.git`
 4. `cd Dopamine`
