@@ -6,8 +6,9 @@
 1. `sudo apt-get install make git openssh-client bzip2 wget curl xz-utils cmake python3`
 2. install [Vita SDK](https://vitasdk.org/) and add it to your `$PATH`
 3. `git clone --recursive git@github.com:ShotgunApe/Dopamine.git`
-4. `mkdir build && cd build`
-5. `cmake .. && make` or open `CMakeLists.txt` in your favorite IDE
+4. `cd Dopamine`
+5. `mkdir build && cd build`
+6. `cmake .. && make` or open `CMakeLists.txt` in your favorite IDE
 
 ### Resources
 - Vita SDK [Samples](https://github.com/vitasdk/samples) for text rendering
