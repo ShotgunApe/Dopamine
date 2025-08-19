@@ -42,14 +42,15 @@ void Emu::loadElf(File &elf_file) {
 }
 
 void Emu::process() {
+    // TODO: separate outer switch by one of 3 types of instruction from documentation
     const SceUInt32 opcode = *reinterpret_cast<SceUInt32*>(&mem_map[r5900.pc]);
-    switch (r5900.pc){
-        case (opcode):
+    switch (opcode){
+        case (0x00):
             break;
         default:
             printf("unimplemented opcode: 0x%08x\n", opcode);
     }
-    r5900.pc += 8; //TODO: when do i increment?
+    r5900.pc += 8; // TODO: when do i increment?
 }
 
 
