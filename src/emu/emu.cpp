@@ -42,9 +42,14 @@ void Emu::loadElf(File &elf_file) {
 }
 
 void Emu::process() {
-    r5900.pc += 8;
     const SceUInt32 opcode = *reinterpret_cast<SceUInt32*>(&mem_map[r5900.pc]);
-    printf("instruction: 0x%08x\n", opcode);
+    switch (r5900.pc){
+        case (opcode):
+            break;
+        default:
+            printf("unimplemented opcode: 0x%08x\n", opcode);
+    }
+    r5900.pc += 8; //TODO: when do i increment?
 }
 
 

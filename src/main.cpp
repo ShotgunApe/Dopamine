@@ -35,6 +35,7 @@ int main(int argc, char *argv[]) {
 
 	// run
 	SceUInt16 steps = 32;
+	printf("executing!\n\n");
 	do {
 		emu.process();
 		steps--;
