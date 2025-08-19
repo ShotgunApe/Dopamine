@@ -10,6 +10,7 @@
 #define printf psvDebugScreenPrintf
 
 Emu::Emu() {
+    mem_map.resize(32 * 1024 * 1024); // 32MB of memory
 }
 
 Emu::~Emu() {
@@ -26,18 +27,24 @@ void Emu::loadElf(File &elf_file) {
             continue;
         }
 
+        SceUInt32 vaddr = phdr->p_vaddr & 0x1FFFFFFF;
+
         // Copy data from ELF into emulator memory TODO: Fix why this isn't working
-        std::memcpy(&mem_map[phdr->p_vaddr & 0x1FFFFFFF],
-                    elf_file.getElf().data() + phdr->p_offset,
-                    phdr->p_filesz);
+        std::memcpy(&mem_map[vaddr], elf_file.getElf().data() + phdr->p_offset, phdr->p_filesz);
+
+        if (phdr->p_memsz > phdr->p_filesz) {
+            std::memset(&mem_map[vaddr + phdr->p_filesz], 0, phdr->p_memsz - phdr->p_filesz);
+        }
     }
 
     r5900.pc = (ehdr->e_entry);
-    printf("entry point: 0x%x\n", r5900.pc);
+    printf("entry point: 0x%08x\n\n", r5900.pc);
 }
 
 void Emu::process() {
-
+    r5900.pc += 8;
+    const SceUInt32 opcode = *reinterpret_cast<SceUInt32*>(&mem_map[r5900.pc]);
+    printf("instruction: 0x%08x\n", opcode);
 }
 
 

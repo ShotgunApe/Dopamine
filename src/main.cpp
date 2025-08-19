@@ -33,10 +33,11 @@ int main(int argc, char *argv[]) {
 	Emu emu;
 	emu.loadElf(selectedElf);
 
-	//bool running;
-	//while (running) {
-	//	emu.process();
-	//}
+	SceUInt16 steps = 32;
+	do {
+		emu.process();
+		steps--;
+	} while (steps > 0);
 
 	sceKernelExitProcess(0);
 	return 0;
