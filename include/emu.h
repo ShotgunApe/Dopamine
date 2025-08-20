@@ -14,7 +14,7 @@ public:
     void loadElf(File &elf_file);
     void process();
 
-    R5900 r5900;
+    EmotionEngine ee;
 
 private:
     std::vector<unsigned char> mem_map;

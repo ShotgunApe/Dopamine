@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
 
 	// init ui
 	Frontend ui;
-	ui.initFrontend();
+	Frontend::initFrontend();
 
 	// run tests
 	doctest::Context context;
@@ -35,7 +35,6 @@ int main(int argc, char *argv[]) {
 
 	// run
 	SceUInt16 steps = 32;
-	printf("executing!\n\n");
 	do {
 		emu.process();
 		steps--;

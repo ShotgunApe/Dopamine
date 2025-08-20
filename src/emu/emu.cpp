@@ -1,10 +1,8 @@
 #include "emu.h"
-
-#include <cstring>
-
 #include "ee.h"
 #include "debugScreen.h"
 
+#include <cstring>
 #include <elf.h>
 
 #define printf psvDebugScreenPrintf
@@ -29,7 +27,7 @@ void Emu::loadElf(File &elf_file) {
 
         SceUInt32 vaddr = phdr->p_vaddr & 0x1FFFFFFF;
 
-        // Copy data from ELF into emulator memory TODO: Fix why this isn't working
+        // Copy data from ELF into emulator memory
         std::memcpy(&mem_map[vaddr], elf_file.getElf().data() + phdr->p_offset, phdr->p_filesz);
 
         if (phdr->p_memsz > phdr->p_filesz) {
@@ -37,19 +35,26 @@ void Emu::loadElf(File &elf_file) {
         }
     }
 
-    r5900.pc = (ehdr->e_entry & 0x1FFFFFFF);
-    printf("entry point: 0x%08x\n\n", r5900.pc);
+    ee.r5900.pc = (ehdr->e_entry & 0x1FFFFFFF);
+    printf("entry point: 0x%08x\n\n", ee.r5900.pc);
 }
 
 void Emu::process() {
-    // TODO: separate outer switch by one of 3 types of instruction from documentation
-    const SceUInt32 opcode = *reinterpret_cast<SceUInt32*>(&mem_map[r5900.pc]);
+    const SceUInt32 instruction = *reinterpret_cast<SceUInt32*>(&mem_map[ee.r5900.pc]);
+
+    // Mask 6 bits to determine type of instruction
+    const SceUInt8 opcode = (instruction >> 26) & 0x3F;
+
     switch (opcode) {
-    case (0x00000000):
-        printf ("0x%08x NOP\n", opcode);
-        break;
-    default:
-        printf("0x%08x (unimplemented opcode)\n", opcode);
+        case (0x00):
+            ee.r5900.rType(instruction);
+            break;
+        case (0x023FF): // TODO: eventually find good way to determine if jump instruction
+            ee.r5900.jType(instruction);
+            break;
+        default:
+            ee.r5900.iType(instruction);
     }
-    r5900.pc += 4; // TODO: when do i increment?
+
+    ee.r5900.pc += 4; // TODO: when do i increment?
 }
