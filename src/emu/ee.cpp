@@ -22,10 +22,16 @@ const char* EmotionEngine::R5900::gprID[32] = {
 void EmotionEngine::R5900::iType(SceUInt32 instruction) {
 
     const SceUInt8 op = (instruction >> 26) & 0x3F;
+    const SceUInt8 rs = (instruction >> 21) & 0x1F;
     const SceUInt8 rt = (instruction >> 16) & 0x1F;
     const SceUInt16 immediate = instruction & 0xFFFF;
 
     switch (op) {
+        case (0x09): // ADDIU rt, rs, immediate (Add Immediate Unsigned Word)
+            printf("0x%08x ADDIU %s, %s, 0x%04x\n", instruction, gprID[rs], gprID[rt], immediate);
+            // TODO: figure out how to properly ensure that there is never an overflow exception
+            gpr[rt].low = gpr[rs].low + static_cast<SceInt16>(immediate);  // Signed or unsigned?
+            break;
         case (0x0F): // LUI rt, immediate (Load Upper Immediate)
             printf("0x%08x LUI %s, 0x%04x\n", instruction, gprID[rt], immediate);
             gpr[rt].low = static_cast<SceUInt64>(immediate) << 16;
