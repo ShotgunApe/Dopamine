@@ -10,13 +10,29 @@ do {                                        \
     }                                       \
 } while(0)
 
+const char* EmotionEngine::R5900::gprID[32] = {
+    "zero", "at", "v0", "v1",
+    "a0", "a1", "a2", "a3",
+    "t0", "t1", "t2", "t3", "t4", "t5", "t6", "t7",
+    "s0", "s1", "s2", "s3", "s4", "s5", "s6", "s7",
+    "t8", "t9", "k0", "k1",
+    "gp", "sp", "fp", "ra"
+};
+
 void EmotionEngine::R5900::iType(SceUInt32 instruction) {
-    // TODO: parse I type of instruction
-    //const SceUInt8 op = (instruction >> 26) & 0x3F;
-    //const SceUInt8 rs = (instruction >> 21) & 0x1F;
 
-    printf("0x%08x (unimplemented opcode)\n", instruction);
+    const SceUInt8 op = (instruction >> 26) & 0x3F;
+    const SceUInt8 rt = (instruction >> 16) & 0x1F;
+    const SceUInt16 immediate = instruction & 0xFFFF;
 
+    switch (op) {
+        case (0x0F): // LUI rt, immediate (Load Upper Immediate)
+            printf("0x%08x LUI %s, 0x%04x\n", instruction, gprID[rt], immediate);
+            gpr[rt].low = static_cast<SceUInt64>(immediate) << 16;
+            break;
+        default:
+            printf("0x%08x (unimplemented opcode)\n", instruction);
+    }
 }
 
 void EmotionEngine::R5900::jType(SceUInt32 instruction) {
