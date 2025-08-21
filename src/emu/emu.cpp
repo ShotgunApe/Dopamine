@@ -49,11 +49,12 @@ void Emu::process() {
         case (0x00):
             ee.r5900.rType(instruction);
             break;
-        case (0x023FF): // TODO: eventually find good way to determine if jump instruction
+        case (0x23): // TODO: eventually find good way to determine if jump instruction
             ee.r5900.jType(instruction);
             break;
         default:
             ee.r5900.iType(instruction);
+            break;
     }
 
     ee.r5900.pc += 4; // TODO: when do i increment?

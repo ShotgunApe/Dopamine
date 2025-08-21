@@ -19,12 +19,7 @@ int main(int argc, char *argv[]) {
 	// run tests
 	doctest::Context context;
 	context.applyCommandLine(argc, argv);
-	const int res = context.run();
-
-	if (context.shouldExit()) {
-		// propagate the result of the tests
-		return res;
-	}
+	context.run();
 
 	// select a file
 	File selectedElf = ui.selectFile();
