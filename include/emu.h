@@ -12,6 +12,7 @@ public:
     ~Emu();
 
     void loadElf(File &elf_file);
+    void debugAssignMemory(SceUInt32 instruction);
     void process();
 
     EmotionEngine ee;

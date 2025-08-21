@@ -39,6 +39,13 @@ void Emu::loadElf(File &elf_file) {
     printf("entry point: 0x%08x\n\n", ee.r5900.pc);
 }
 
+void Emu::debugAssignMemory(const SceUInt32 instruction) {
+    for (size_t i = 0; i < mem_map.size() - 3; i += 4) {
+        std::memcpy(&mem_map[i], &instruction, sizeof(SceUInt32));
+    }
+}
+
+
 void Emu::process() {
     const SceUInt32 instruction = *reinterpret_cast<SceUInt32*>(&mem_map[ee.r5900.pc]);
 

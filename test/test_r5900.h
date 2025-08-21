@@ -8,4 +8,12 @@ TEST_CASE("Testing R5900 Initialization") {
     CHECK(emu.ee.r5900.pc == static_cast<SceUInt32>(0x00000000));
 }
 
+TEST_CASE("Testing Implemented Opcodes")
+{
+    Emu emu;
+    emu.debugAssignMemory(static_cast<SceUInt32>(0x3c020027));
+    emu.process();
+    CHECK(emu.ee.r5900.v0.low == 0x00270000);
+}
+
 #endif
