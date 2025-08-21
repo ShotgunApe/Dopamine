@@ -19,7 +19,7 @@ const char* EmotionEngine::R5900::gprID[32] = {
     "gp", "sp", "fp", "ra"
 };
 
-void EmotionEngine::R5900::iType(SceUInt32 instruction) {
+void EmotionEngine::R5900::iType(const SceUInt32 instruction) {
 
     const SceUInt8 op = (instruction >> 26) & 0x3F;
     const SceUInt8 rs = (instruction >> 21) & 0x1F;
