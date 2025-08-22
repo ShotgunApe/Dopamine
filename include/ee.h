@@ -4,6 +4,10 @@
 
 class EmotionEngine {
 public:
+
+    EmotionEngine();
+    ~EmotionEngine();
+
     // Define 128bit register for GPRs - TODO: Find a better solution for this
     struct SceUInt128 {
         SceUInt64 high;

@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 	emu.loadElf(selectedElf);
 
 	// run
-	SceUInt16 steps = 32;
+	SceUInt16 steps = 52;
 	do {
 		emu.process();
 		steps--;

@@ -3,12 +3,21 @@
 #include "doctest/doctest.h"
 
 // gross macro to ignore printf if doctest is running
-#define printf(...)                         \
-do {                                        \
-    if (!doctest::is_running_in_test) {     \
-        psvDebugScreenPrintf(__VA_ARGS__);  \
-    }                                       \
+#define printf(...)                             \
+do {                                            \
+    if (!doctest::is_running_in_test) {         \
+        psvDebugScreenPrintf(__VA_ARGS__);      \
+    }                                           \
 } while(0)
+
+EmotionEngine::EmotionEngine() {
+
+}
+
+EmotionEngine::~EmotionEngine() {
+
+}
+
 
 const char* EmotionEngine::R5900::gprID[32] = {
     "zero", "at", "v0", "v1",
