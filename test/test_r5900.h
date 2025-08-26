@@ -47,6 +47,10 @@ TEST_CASE("Testing Opcodes") {
     emu.process();
     CHECK(emu.ee.r5900.gpr[rd].low == 1);
 
+    // BNE
+    emu.debugAssignMemory(static_cast<SceUInt32>(0x1420FFFB));
+    // TODO: Figure out what the delay slot is so that i can figure out how to test
+
 }
 
 #endif

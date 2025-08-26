@@ -36,8 +36,6 @@ void EmotionEngine::R5900::iType(const SceUInt32 instruction) {
     const SceUInt16 immediate = instruction & 0xFFFF;
 
     switch (op) {
-        case (0x05): // BNE rs, rt, offset (Branch On Not Equal)
-            return;
         case (0x09): // ADDIU rt, rs, immediate (Add Immediate Unsigned Word)
             printf("0x%08x ADDIU %s, %s, 0x%04x\n", instruction, gprID[rs], gprID[rt], immediate);
             // TODO: figure out how to properly ensure that there is never an overflow exception
@@ -53,7 +51,20 @@ void EmotionEngine::R5900::iType(const SceUInt32 instruction) {
 }
 
 void EmotionEngine::R5900::jType(SceUInt32 instruction) {
-    printf("0x%08x (unimplemented opcode)\n", instruction);
+
+    const SceUInt8 op = (instruction >> 26) & 0x3F;
+    const SceUInt8 rs = (instruction >> 21) & 0x1F;
+    const SceUInt8 rt = (instruction >> 16) & 0x1F;
+    const SceUInt16 offset = instruction & 0xFFFF;
+
+    switch (op) {
+        case (0x05):
+            printf("0x%08x BNE %s, %s, 0x%08x\n", instruction, gprID[rs], gprID[rt], offset);
+            break;
+        default:
+            printf("0x%08x (unimplemented opcode)\n", instruction);
+            break;
+    }
 }
 
 void EmotionEngine::R5900::rType(SceUInt32 instruction) {

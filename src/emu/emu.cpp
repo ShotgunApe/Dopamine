@@ -56,7 +56,7 @@ void Emu::process() {
         case (0x00):
             ee.r5900.rType(instruction);
             break;
-        case (0x23): // TODO: eventually find good way to determine if jump instruction
+        case (0x05): // TODO: eventually find good way to determine if jump instruction
             ee.r5900.jType(instruction);
             break;
         default:
