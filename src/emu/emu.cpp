@@ -52,17 +52,19 @@ void Emu::process() {
     // Mask 6 bits to determine type of instruction
     const SceUInt8 opcode = (instruction >> 26) & 0x3F;
 
+    // read/increment/execute
     switch (opcode) {
         case (0x00):
+            ee.r5900.pc += 4;
             ee.r5900.rType(instruction);
             break;
         case (0x05): // TODO: eventually find good way to determine if jump instruction
+            ee.r5900.pc += 4;
             ee.r5900.jType(instruction);
             break;
         default:
+            ee.r5900.pc += 4;
             ee.r5900.iType(instruction);
             break;
     }
-
-    ee.r5900.pc += 4; // TODO: when do i increment?
 }
