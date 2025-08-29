@@ -10,6 +10,9 @@ do {                                            \
     }                                           \
 } while(0)
 
+// https://stackoverflow.com/questions/5814072/sign-extend-a-nine-bit-number-in-c
+#define signex(v, sb) ((v) | (((v) & (1 << (sb))) ? ~((1 << (sb))-1) : 0))
+
 EmotionEngine::EmotionEngine() {
 
 }
@@ -39,6 +42,7 @@ void EmotionEngine::R5900::iType(const SceUInt32 instruction) {
         case (0x09): // ADDIU rs, rt, immediate (Add Immediate Unsigned Word)
             printf("0x%08x ADDIU %s, %s, 0x%04x\n", instruction, gprID[rs], gprID[rt], immediate);
             // TODO: figure out how to properly ensure that there is never an overflow exception
+            // TODO: this is also broken at the moment need to check docs
             gpr[rt].low = gpr[rs].low + static_cast<SceInt16>(immediate);  // Signed or unsigned?
             break;
         case (0x0F): // LUI rt, immediate (Load Upper Immediate)
@@ -58,15 +62,16 @@ void EmotionEngine::R5900::jType(SceUInt32 instruction) {
     const SceUInt16 offset = instruction & 0xFFFF;
 
     switch (op) {
-        case (0x05): // BNE rs, rt, offset (Branch On Not Equal)
-            printf("0x%08x BNE %s, %s, 0x%08x\n", instruction, gprID[rs], gprID[rt], offset);
+        case (0x05): { // BNE rs, rt, offset (Branch On Not Equal)
+            const SceUInt32 toJump = pc + signex(offset << 2, 15);
+            printf("0x%08x BNE %s, %s, 0x%08x\n", instruction, gprID[rs], gprID[rt], toJump);
             if (gpr[rs].low != gpr[rs].low) {
-                pc = (offset << 2) + (pc & 0xFFFF);
+                pc = toJump;
             }
             break;
+        }
         default:
             printf("0x%08x (unimplemented opcode)\n", instruction);
-            break;
     }
 }
 
