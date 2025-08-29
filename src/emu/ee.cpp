@@ -49,6 +49,9 @@ void EmotionEngine::R5900::iType(const SceUInt32 instruction) {
             printf("0x%08x LUI %s, 0x%04x\n", instruction, gprID[rt], immediate);
             gpr[rt].low = static_cast<SceUInt64>(immediate) << 16;
             break;
+        case (0x1F): // SQ rs, rt, immediate (Store Quadword)
+            printf("0x%08x SQ %s, %s, 0x%08x\n", instruction, gprID[rt], gprID[rs], (immediate + gpr[rs].low));
+            break;
         default:
             printf("0x%08x (unimplemented opcode)\n", instruction);
     }
@@ -63,7 +66,7 @@ void EmotionEngine::R5900::jType(SceUInt32 instruction) {
 
     switch (op) {
         case (0x05): { // BNE rs, rt, offset (Branch On Not Equal)
-            const SceUInt32 toJump = pc + signex(offset << 2, 15);
+            const SceUInt32 toJump = pc + signex(offset << 2, 15); // TODO: do i need to convert to virtual address??
             printf("0x%08x BNE %s, %s, 0x%08x\n", instruction, gprID[rs], gprID[rt], toJump);
             if (gpr[rs].low != gpr[rs].low) {
                 pc = toJump;
@@ -77,7 +80,7 @@ void EmotionEngine::R5900::jType(SceUInt32 instruction) {
 
 void EmotionEngine::R5900::rType(SceUInt32 instruction) {
 
-    const SceUInt8 op = instruction & 0x000000FF;
+    const SceUInt8 op = instruction & 0xFF;
     const SceUInt8 rs = (instruction >> 21) & 0x1F;
     const SceUInt8 rt = (instruction >> 16) & 0x1F;
     const SceUInt8 rd = (instruction >> 11) & 0x1F;
@@ -85,6 +88,10 @@ void EmotionEngine::R5900::rType(SceUInt32 instruction) {
     switch (op) {
         case (0x00):
             printf("0x%08x NOP\n", instruction);
+            break;
+        case (0x0C):
+            printf("0x%08x SYSCALL\n");
+            // TODO: Create Syscall function that checks flags to do the thing yeah
             break;
         case (0x2B): //SLTU rd, rs, rt (Set On Less Than Unassigned)
             printf("0x%08x SLTU %s, %s, %s\n", instruction, gprID[rd], gprID[rs], gprID[rt]);
