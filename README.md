@@ -1,6 +1,6 @@
 <h2 align=center> Dopamine </h2>
 
-<p align=center> WIP R3000 Disassembler for PS Vita </p>
+<p align=center> WIP R5900 Disassembler for PS Vita </p>
 
 ### Getting Started
 1. `sudo apt-get install make git openssh-client bzip2 wget curl xz-utils ninja-build cmake python3`

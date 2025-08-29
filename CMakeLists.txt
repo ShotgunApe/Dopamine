@@ -33,6 +33,7 @@ add_executable(${PROJECT_NAME}
 
         test/test_r5900.h
         test/listener.cpp
+        include/hle_bios.h
 )
 
 target_link_libraries(${PROJECT_NAME}

@@ -49,9 +49,12 @@ void EmotionEngine::R5900::iType(const SceUInt32 instruction) {
             printf("0x%08x LUI %s, 0x%04x\n", instruction, gprID[rt], immediate);
             gpr[rt].low = static_cast<SceUInt64>(immediate) << 16;
             break;
-        case (0x1F): // SQ rs, rt, immediate (Store Quadword)
-            printf("0x%08x SQ %s, %s, 0x%08x\n", instruction, gprID[rt], gprID[rs], (immediate + gpr[rs].low));
+        case (0x1F): { // SQ rs, rt, immediate (Store Quadword)
+            const SceUInt32 toStore = immediate + gpr[rs].low;
+            printf("0x%08x SQ %s, %s\n", instruction, gprID[rt], gprID[rs]);
+            // TODO: Actually implement this - i /think/ this initializes everything to 0 in demo2a.elf, which i do anyway
             break;
+        }
         default:
             printf("0x%08x (unimplemented opcode)\n", instruction);
     }
