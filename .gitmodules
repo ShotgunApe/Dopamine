@@ -1,3 +1,6 @@
 [submodule "lib/doctest"]
 	path = lib/doctest
 	url = git@github.com:doctest/doctest.git
+[submodule "lib/vitaGL"]
+	path = lib/vitaGL
+	url = git@github.com:Rinnegatamante/vitaGL.git
