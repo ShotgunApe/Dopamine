@@ -2,6 +2,8 @@
 #define EE_H
 #include <psp2common/types.h>
 
+#include "hle_bios.h"
+
 class EmotionEngine {
 public:
 
@@ -33,6 +35,7 @@ public:
     };
 
     R5900 r5900;
+
 
 private:
 

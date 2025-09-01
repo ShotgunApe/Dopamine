@@ -94,7 +94,9 @@ void EmotionEngine::R5900::rType(SceUInt32 instruction) {
             break;
         case (0x0C):
             printf("0x%08x SYSCALL\n");
-            // TODO: Create Syscall function that checks flags to do the thing yeah
+            pc = 0x80000180;
+            // TODO: set COP0.Cause to 08h (whatever that means)
+            HLEBios::processSyscall();
             break;
         case (0x2B): //SLTU rd, rs, rt (Set On Less Than Unassigned)
             printf("0x%08x SLTU %s, %s, %s\n", instruction, gprID[rd], gprID[rs], gprID[rt]);

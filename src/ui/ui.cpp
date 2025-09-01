@@ -1,7 +1,7 @@
 #include "ui.h"
 #include "debugScreen.h"
 
-#define printf psvDebugScreenPrintf
+#include <imgui_vita.h>
 
 Frontend::Frontend() {
 }
@@ -10,9 +10,17 @@ Frontend::~Frontend() {
 }
 
 void Frontend::initFrontend() {
-    // Init screen with debug text function provided by SDK - TODO: Create UI using sdl or some other library
-    psvDebugScreenInit();
-    printf("Dopamine\n\n");
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui_ImplVitaGL_Init();
+
+    // Setup style
+    ImGui::StyleColorsDark();
+
+    ImGui_ImplVitaGL_TouchUsage(true);
+    ImGui_ImplVitaGL_UseIndirectFrontTouch(false);
+    ImGui_ImplVitaGL_UseRearTouch(true);
+    ImGui_ImplVitaGL_GamepadUsage(true);
 }
 
 File Frontend::selectFile() {
