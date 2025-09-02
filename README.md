@@ -13,7 +13,7 @@
 ### Running
 Dopamine requires that `libshacccg.suprx` is extracted and decrypted on your console. This can be done using [ShaRKF00D](https://github.com/OsirizX/ShaRKF00D/releases/tag/1.3).
 
-1. Download `Dopamine.vpk` and install it with VitaShell
+1. Transfer `Dopamine.vpk` to your console and install it with VitaShell
 2. Run the program
 
 ### Resources

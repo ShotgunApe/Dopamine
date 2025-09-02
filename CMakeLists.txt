@@ -41,14 +41,13 @@ add_executable(${PROJECT_NAME}
         src/emu/dmac.cpp
         src/emu/hle_bios.cpp
 
-        src/ui/gfx/debugScreen.c
         src/ui/filesys/file.cpp
+        src/ui/gfx/testStream.cpp
         src/ui/ui.cpp
 
         test/test_r5900.h
         test/listener.cpp
 
-        src/ui/gfx/imgui_demo.cpp
         $<TARGET_OBJECTS:imgui_vita>
 )
 

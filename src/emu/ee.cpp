@@ -1,14 +1,12 @@
 #include "ee.h"
-#include "debugScreen.h"
 #include "doctest/doctest.h"
 
-// gross macro to ignore printf if doctest is running
-#define printf(...)                             \
-do {                                            \
-    if (!doctest::is_running_in_test) {         \
-        psvDebugScreenPrintf(__VA_ARGS__);      \
-    }                                           \
-} while(0)
+#include <imgui_vita.h>
+#include <cstdio>
+
+#include "testStream.h"
+
+// TODO: Fix this macro to actually work
 
 // https://stackoverflow.com/questions/5814072/sign-extend-a-nine-bit-number-in-c
 #define signex(v, sb) ((v) | (((v) & (1 << (sb))) ? ~((1 << (sb))-1) : 0))

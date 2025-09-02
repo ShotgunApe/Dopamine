@@ -1,10 +1,18 @@
 #include "doctest/doctest.h"
-#include "debugScreen.h"
+
+#include <imgui_vita.h>
 
 #include <mutex>
 #include <cstring>
+#include <sstream>
+#include <testStream.h>
 
-#define printf psvDebugScreenPrintf
+#define printf(...)                             \
+do {                                            \
+    char buf[1024];                             \
+    snprintf(buf, sizeof(buf), __VA_ARGS__);    \
+    outputBuffer << buf;                        \
+} while(0)                                      \
 
 using namespace doctest;
 
@@ -17,9 +25,7 @@ struct VitaListener : public IReporter
     std::mutex            mutex;
 
     // constructor has to accept the ContextOptions by ref as a single argument
-    VitaListener(const ContextOptions& in)
-            : stdout_stream(*in.cout)
-            , opt(in) {}
+    VitaListener(const ContextOptions& in): stdout_stream(*in.cout), opt(in) {}
 
     void report_query(const QueryData& /*in*/) override {}
 
