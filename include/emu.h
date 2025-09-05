@@ -1,10 +1,10 @@
 #ifndef EMU_H
 #define EMU_H
 
+#include <vector>
+
 #include "file.h"
 #include "ee.h"
-
-#include <vector>
 
 class Emu {
 public:

@@ -42,7 +42,7 @@ add_executable(${PROJECT_NAME}
         src/emu/hle_bios.cpp
 
         src/ui/filesys/file.cpp
-        src/ui/gfx/testStream.cpp
+        src/ui/gfx/text_stream.cpp
         src/ui/ui.cpp
 
         test/test_r5900.h

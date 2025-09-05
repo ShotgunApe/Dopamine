@@ -1,18 +1,11 @@
 #include "emu.h"
-#include "ee.h"
-
-#include "testStream.h"
 
 #include <cstring>
 #include <cstdio>
 #include <elf.h>
 
-#define printf(...)                             \
-do {                                            \
-    char buf[1024];                             \
-    snprintf(buf, sizeof(buf), __VA_ARGS__);    \
-    outputBuffer << buf;                        \
-} while(0)                                      \
+#include "ee.h"
+#include "text_stream.h"
 
 Emu::Emu() {
     mem_map.resize(32 * 1024 * 1024); // 32MB of memory

@@ -1,3 +1,3 @@
-#include "testStream.h"
+#include "text_stream.h"
 
 std::stringstream outputBuffer;

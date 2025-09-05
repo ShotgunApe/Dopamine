@@ -1,5 +1,5 @@
-#ifndef TESTSTREAM_H
-#define TESTSTREAM_H
+#ifndef TEXT_STREAM_H
+#define TEXT_STREAM_H
 
 #include <sstream>
 

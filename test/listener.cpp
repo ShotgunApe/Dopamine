@@ -1,18 +1,10 @@
 #include "doctest/doctest.h"
 
 #include <imgui_vita.h>
-
 #include <mutex>
 #include <cstring>
 #include <sstream>
-#include <testStream.h>
-
-#define printf(...)                             \
-do {                                            \
-    char buf[1024];                             \
-    snprintf(buf, sizeof(buf), __VA_ARGS__);    \
-    outputBuffer << buf;                        \
-} while(0)                                      \
+#include <text_stream.h>
 
 using namespace doctest;
 

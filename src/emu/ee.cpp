@@ -1,12 +1,10 @@
 #include "ee.h"
-#include "doctest/doctest.h"
 
 #include <imgui_vita.h>
 #include <cstdio>
 
-#include "testStream.h"
-
-// TODO: Fix this macro to actually work
+#include "doctest/doctest.h"
+#include "text_stream.h"
 
 // https://stackoverflow.com/questions/5814072/sign-extend-a-nine-bit-number-in-c
 #define signex(v, sb) ((v) | (((v) & (1 << (sb))) ? ~((1 << (sb))-1) : 0))

@@ -1,5 +1,6 @@
 #ifndef EE_H
 #define EE_H
+
 #include <psp2common/types.h>
 
 #include "hle_bios.h"

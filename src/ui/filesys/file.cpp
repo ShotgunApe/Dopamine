@@ -4,15 +4,7 @@
 #include <psp2/io/fcntl.h>
 #include <psp2/kernel/processmgr.h>
 
-#include "testStream.h"
-
-#define printf(...)                             \
-do {                                            \
-    char buf[1024];                             \
-    snprintf(buf, sizeof(buf), __VA_ARGS__);    \
-    outputBuffer << buf;                        \
-} while(0)                                      \
-
+#include "text_stream.h"
 
 File::File() : open_file(0) {
 }

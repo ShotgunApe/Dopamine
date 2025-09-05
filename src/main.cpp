@@ -10,7 +10,7 @@
 
 #include "ui.h"
 #include "emu.h"
-#include "testStream.h"
+#include "text_stream.h"
 
 #include "doctest/doctest.h"
 #include "../test/test_r5900.h"
