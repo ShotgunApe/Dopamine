@@ -3,9 +3,14 @@
 #define DOCTEST_CONFIG_NO_POSIX_SIGNALS
 #define DOCTEST_CONFIG_IMPLEMENT
 
-#include <psp2/kernel/processmgr.h>
-#include <imgui_vita.h>
-#include <vitaGL.h>
+#ifdef __vita__
+	#include <psp2/kernel/processmgr.h>
+	#include <imgui_vita.h>
+	#include <vitaGL.h>
+#else
+	#include <imgui.h>
+#endif
+
 #include <sstream>
 
 #include "ui.h"
@@ -18,7 +23,9 @@
 int main(int argc, char *argv[]) {
 
 	// init ui
+	#ifdef __vita__
 	vglInitExtended(0, 960, 544, 0x1800000, SCE_GXM_MULTISAMPLE_4X);
+	#endif
 	Frontend ui;
 	Frontend::initFrontend();
 
@@ -71,10 +78,13 @@ int main(int argc, char *argv[]) {
 		}
 
 		// Rendering
+
 		glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
+
 		ImGui::Render();
+
 		ImGui_ImplVitaGL_RenderDrawData(ImGui::GetDrawData());
 		vglSwapBuffers(GL_FALSE);
 	}

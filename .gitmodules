@@ -4,3 +4,6 @@
 [submodule "lib/imgui-vita"]
 	path = lib/imgui-vita
 	url = git@github.com:Rinnegatamante/imgui-vita.git
+[submodule "lib/imgui"]
+	path = lib/imgui
+	url = git@github.com:ocornut/imgui.git

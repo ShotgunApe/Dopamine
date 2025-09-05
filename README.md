@@ -5,7 +5,7 @@
 ![A Screenshot of the application.](https://i.imgur.com/B3grL7x.png)
 
 ### Building
-1. `sudo apt-get install make git openssh-client bzip2 wget curl xz-utils ninja-build cmake python3`
+1. `sudo apt-get install make git openssh-client bzip2 wget curl xz-utils ninja-build cmake python3 libgl1-mesa-dev libglu1-mesa-dev`
 2. Install [Vita SDK](https://vitasdk.org/) and add it to your `$PATH`
 3. `git clone --recursive git@github.com:ShotgunApe/Dopamine.git`
 4. `cd Dopamine`
