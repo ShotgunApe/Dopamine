@@ -1,7 +1,16 @@
 #ifndef EE_H
 #define EE_H
 
-#include <psp2common/types.h>
+#ifdef __vita__
+    #include <psp2common/types.h>
+#else
+    #include <cstdint>
+    #define SceUInt8 uint8_t
+    #define SceUInt16 uint16_t
+    #define SceInt16 int16_t
+    #define SceUInt32 uint32_t
+    #define SceUInt64 uint64_t
+#endif
 
 #include "hle_bios.h"
 

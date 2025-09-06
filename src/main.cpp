@@ -7,8 +7,12 @@
 	#include <psp2/kernel/processmgr.h>
 	#include <imgui_vita.h>
 	#include <vitaGL.h>
+	struct GLFWwindow;			// Dummy struct to pass nullptr to function
 #else
 	#include <imgui.h>
+	#include <GLFW/glfw3.h>
+	#include "backends/imgui_impl_glfw.h"
+	#include "backends/imgui_impl_opengl3.h"
 #endif
 
 #include <sstream>
@@ -24,10 +28,17 @@ int main(int argc, char *argv[]) {
 
 	// init ui
 	#ifdef __vita__
-	vglInitExtended(0, 960, 544, 0x1800000, SCE_GXM_MULTISAMPLE_4X);
+		vglInitExtended(0, 960, 544, 0x1800000, SCE_GXM_MULTISAMPLE_4X);
+		GLFWwindow* window = nullptr;
+	#else
+		float main_scale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor()); // Valid on GLFW 3.3+ only
+		GLFWwindow* window = glfwCreateWindow((int)(1280 * main_scale), (int)(800 * main_scale), "Dopamine", nullptr, nullptr);
+		glfwMakeContextCurrent(window);
+		glfwSwapInterval(1); // Enable vsync
 	#endif
+
 	Frontend ui;
-	Frontend::initFrontend();
+	Frontend::initFrontend(window);
 
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
@@ -52,9 +63,14 @@ int main(int argc, char *argv[]) {
 
 	// Main loop
 	bool done = false;
-	while (!done)
-	{
-		ImGui_ImplVitaGL_NewFrame();
+	while (!done) {
+		#ifdef __vita__
+			ImGui_ImplVitaGL_NewFrame();
+		#else
+			ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplGlfw_NewFrame();
+			ImGui::NewFrame();
+		#endif
 
 		if (ImGui::BeginMainMenuBar()){
 			if (ImGui::BeginMenu("Dopamine")){
@@ -78,22 +94,33 @@ int main(int argc, char *argv[]) {
 		}
 
 		// Rendering
-
 		glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
 		glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 		glClear(GL_COLOR_BUFFER_BIT);
-
 		ImGui::Render();
 
-		ImGui_ImplVitaGL_RenderDrawData(ImGui::GetDrawData());
-		vglSwapBuffers(GL_FALSE);
+		#ifdef __vita__
+			ImGui_ImplVitaGL_RenderDrawData(ImGui::GetDrawData());
+			vglSwapBuffers(GL_FALSE);
+		#else
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+			glfwSwapBuffers(GL_FALSE);
+		#endif
 	}
 
 	// Cleanup
-	ImGui_ImplVitaGL_Shutdown();
+	#ifdef __vita__
+		ImGui_ImplVitaGL_Shutdown();
+		vglEnd();
+	#else
+		ImGui_ImplOpenGL3_Shutdown();
+		ImGui_ImplGlfw_Shutdown();
+	#endif
+
 	ImGui::DestroyContext();
 
-	vglEnd();
-	sceKernelExitProcess(0);
+	#ifdef __vita__
+		sceKernelExitProcess(0);
+	#endif
 	return 0;
 }

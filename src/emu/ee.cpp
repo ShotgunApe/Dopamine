@@ -1,6 +1,11 @@
 #include "ee.h"
 
-#include <imgui_vita.h>
+#ifdef __vita__
+    #include <imgui_vita.h>
+#else
+    #include <imgui.h>
+#endif
+
 #include <cstdio>
 
 #include "doctest/doctest.h"

@@ -1,8 +1,12 @@
 #include "file.h"
 
 #include <cstdio>
-#include <psp2/io/fcntl.h>
-#include <psp2/kernel/processmgr.h>
+
+#ifdef __vita__
+    #include <psp2/io/fcntl.h>
+    #include <psp2/kernel/processmgr.h>
+#else
+#endif
 
 #include "text_stream.h"
 
@@ -18,6 +22,7 @@ std::vector<unsigned char> &File::getElf() {
 
 void File::setElf() {
     // Hard-code .elf to open, for now
+    #ifdef __vita__
     const SceUID fd = sceIoOpen("ux0:/Dopamine/demo2a.elf", SCE_O_RDONLY, 0777);
     if (fd < 0 ) {
         // Error code in fd, for example no open filehandle left (0x80010018)
@@ -41,4 +46,5 @@ void File::setElf() {
     else {
         printf("%u bytes written to memory\n\n",open_file.size());
     }
+    #endif
 }

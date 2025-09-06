@@ -1,6 +1,11 @@
 #include "doctest/doctest.h"
 
-#include <imgui_vita.h>
+#ifdef __vita__
+    #include <imgui_vita.h>
+#else
+    #include <imgui.h>
+#endif
+
 #include <mutex>
 #include <cstring>
 #include <sstream>
@@ -8,7 +13,7 @@
 
 using namespace doctest;
 
-struct VitaListener : public IReporter
+struct ImGuiListener : public IReporter
 {
     // caching pointers/references to objects of these types - safe to do
     std::ostream&         stdout_stream;
@@ -17,7 +22,7 @@ struct VitaListener : public IReporter
     std::mutex            mutex;
 
     // constructor has to accept the ContextOptions by ref as a single argument
-    VitaListener(const ContextOptions& in): stdout_stream(*in.cout), opt(in) {}
+    ImGuiListener(const ContextOptions& in): stdout_stream(*in.cout), opt(in) {}
 
     void report_query(const QueryData& /*in*/) override {}
 
@@ -96,4 +101,4 @@ struct VitaListener : public IReporter
     }
 };
 
-REGISTER_LISTENER("VitaListener", 1, VitaListener);
+REGISTER_LISTENER("ImGuiListener", 1, ImGuiListener);
