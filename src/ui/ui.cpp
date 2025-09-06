@@ -26,8 +26,9 @@ void Frontend::initFrontend(GLFWwindow* window) {
         ImGui_ImplVitaGL_UseRearTouch(true);
         ImGui_ImplVitaGL_GamepadUsage(true);
     #else
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableSetMousePos;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;                  // Enable Keyboard Controls
-        ImGui_ImplGlfw_InitForOpenGL(window, true);          // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
+        ImGui_ImplGlfw_InitForOpenGL(window, true);               // Second param install_callback=true will install GLFW callbacks and chain to existing ones.
         ImGui_ImplOpenGL3_Init();
     #endif
 
