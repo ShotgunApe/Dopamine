@@ -15,7 +15,7 @@ public:
     Frontend();
     ~Frontend();
 
-    static void initFrontend(GLFWwindow* window);
+    static void initFrontend(GLFWwindow& window);
     File selectFile();
 
 private:

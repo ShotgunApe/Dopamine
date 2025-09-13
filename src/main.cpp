@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
 	#endif
 
 	Frontend ui;
-	Frontend::initFrontend(window);
+	Frontend::initFrontend(*window);
 
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
@@ -68,6 +68,7 @@ int main(int argc, char *argv[]) {
 		#ifdef __vita__
 			ImGui_ImplVitaGL_NewFrame();
 		#else
+			glfwPollEvents();
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
