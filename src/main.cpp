@@ -74,17 +74,10 @@ int main(int argc, char *argv[]) {
 			ImGui::NewFrame();
 		#endif
 
-		if (ImGui::BeginMainMenuBar()){
-			if (ImGui::BeginMenu("Dopamine")){
-				ImGui::EndMenu();
-			}
-			ImGui::EndMainMenuBar();
-		}
-
 		// 1. Show a simple window.
 		// Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets automatically appears in a window called "Debug".
 		{
-			ImGui::BeginChild("TestOutput", ImVec2(0, 300), true, ImGuiWindowFlags_HorizontalScrollbar);
+			ImGui::BeginChild("TestOutput", ImVec2(650, 300), true, ImGuiWindowFlags_HorizontalScrollbar);
 			ImGui::TextUnformatted(outputBuffer.str().c_str());
 			ImGui::EndChild();
 
@@ -93,6 +86,24 @@ int main(int argc, char *argv[]) {
 			}
 
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		}
+
+		// Window 2 test
+		{
+			ImGui::SetNextWindowPos(ImVec2(0, 0)); // Top-left corner
+			ImGui::SetNextWindowSize(ImVec2(200, ImGui::GetIO().DisplaySize.y)); // Fixed width, full height
+			ImGui::Begin("Sidebar", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
+
+			ImGui::Text("Sidebar Content");
+			ImGui::Separator();
+			if (ImGui::Button("Button 1"))
+			{
+				// Handle Button 1 click
+			}
+			if (ImGui::Button("Button 2")) {
+				// Handle Button 2 click
+			}
+			ImGui::End();
 		}
 
 		// Rendering
