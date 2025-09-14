@@ -13,12 +13,14 @@
 	#include <GLFW/glfw3.h>
 	#include "backends/imgui_impl_glfw.h"
 	#include "backends/imgui_impl_opengl3.h"
+	#include "vita_int_defines.h"
 #endif
 
 #include <sstream>
 
 #include "ui.h"
 #include "emu.h"
+#include "imgui_center.h"
 #include "text_stream.h"
 
 #include "doctest/doctest.h"
@@ -33,7 +35,8 @@ int main(int argc, char *argv[]) {
 	#else
 		glfwInit();
 		float main_scale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor()); // Valid on GLFW 3.3+ only
-		GLFWwindow* window = glfwCreateWindow(static_cast<int>(1280 * main_scale), static_cast<int>(800 * main_scale), "Dopamine", nullptr, nullptr);
+		//float main_scale = 1.0f;
+		GLFWwindow* window = glfwCreateWindow(static_cast<int>(960 * main_scale), static_cast<int>(544 * main_scale), "Dopamine", nullptr, nullptr);
 		glfwMakeContextCurrent(window);
 		glfwSwapInterval(1); // Enable vsync
 	#endif
@@ -49,18 +52,14 @@ int main(int argc, char *argv[]) {
 	context.run();
 
 	// select a file
-	//File selectedElf = ui.selectFile();
+	File selectedElf = ui.selectFile();
 
 	// init emu
-	//Emu emu;
-	//emu.loadElf(selectedElf);
+	Emu emu;
+	emu.loadElf(selectedElf);
 
 	// run
-	//SceUInt16 steps = 32;
-	//do {
-	//	emu.process();
-	//	steps--;
-	//} while (steps > 0);
+	SceUInt16 steps = 1;
 
 	// Main loop
 	bool done = false;
@@ -74,43 +73,43 @@ int main(int argc, char *argv[]) {
 			ImGui::NewFrame();
 		#endif
 
-		// 1. Show a simple window.
-		// Tip: if we don't call ImGui::Begin()/ImGui::End() the widgets automatically appears in a window called "Debug".
+		// Sidebar
 		{
-			ImGui::BeginChild("TestOutput", ImVec2(650, 300), true, ImGuiWindowFlags_HorizontalScrollbar);
+			ImGui::SetNextWindowPos(ImVec2(0, 0));
+			ImGui::SetNextWindowSize(ImVec2(320, 650));
+			ImGui::Begin("Sidebar", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
+
+			CENTERED_CONTROL(ImGui::Text("Disassembly"));
+			ImGui::Separator();
+
+			ImGui::End();
+		}
+
+		// opengl window
+		{
+			ImGui::SetNextWindowPos(ImVec2((ImGui::GetIO().DisplaySize.x - 640), 0));
+			ImGui::SetNextWindowSize(ImVec2(640, 480));
+			ImGui::Begin("Screen", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
+			ImGui::End();
+		}
+
+		// debug window
+		{
+			ImGui::Begin("TestOutput");
 			ImGui::TextUnformatted(outputBuffer.str().c_str());
-			ImGui::EndChild();
 
 			if (ImGui::Button("Quit")) {
 				done = true;
 			}
 
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		}
-
-		// Sidebar
-		{
-			ImGui::SetNextWindowPos(ImVec2(0, 0)); // Top-left corner
-			ImGui::SetNextWindowSize(ImVec2(350, ImGui::GetIO().DisplaySize.y)); // Fixed width, full height
-			ImGui::Begin("Sidebar", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
-
-			ImGui::Text("Sidebar Content");
+			if (ImGui::Button("Run")) {
+				do {
+					emu.process();
+					steps--;
+				} while (steps > 0);
+			}
 			ImGui::Separator();
-			if (ImGui::Button("Button 1"))
-			{
-				// Handle Button 1 click
-			}
-			if (ImGui::Button("Button 2")) {
-				// Handle Button 2 click
-			}
-			ImGui::End();
-		}
-
-		{
-			ImGui::SetNextWindowPos(ImVec2((ImGui::GetIO().DisplaySize.x - 640), 0));
-			ImGui::SetNextWindowSize(ImVec2(640, 480));
-			ImGui::Begin("Screen", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
-			ImGui::Text("Screen Content");
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::End();
 		}
 

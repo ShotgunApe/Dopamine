@@ -5,11 +5,7 @@
     #include <psp2common/types.h>
 #else
     #include <cstdint>
-    #define SceUInt8 uint8_t
-    #define SceUInt16 uint16_t
-    #define SceInt16 int16_t
-    #define SceUInt32 uint32_t
-    #define SceUInt64 uint64_t
+    #include "vita_int_defines.h"
 #endif
 
 #include "hle_bios.h"
