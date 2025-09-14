@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 	Frontend ui;
 	Frontend::initFrontend(*window);
 
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	constexpr ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 	// init test
 	doctest::Context context;
@@ -88,10 +88,10 @@ int main(int argc, char *argv[]) {
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		}
 
-		// Window 2 test
+		// Sidebar
 		{
 			ImGui::SetNextWindowPos(ImVec2(0, 0)); // Top-left corner
-			ImGui::SetNextWindowSize(ImVec2(200, ImGui::GetIO().DisplaySize.y)); // Fixed width, full height
+			ImGui::SetNextWindowSize(ImVec2(350, ImGui::GetIO().DisplaySize.y)); // Fixed width, full height
 			ImGui::Begin("Sidebar", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
 
 			ImGui::Text("Sidebar Content");
@@ -103,6 +103,14 @@ int main(int argc, char *argv[]) {
 			if (ImGui::Button("Button 2")) {
 				// Handle Button 2 click
 			}
+			ImGui::End();
+		}
+
+		{
+			ImGui::SetNextWindowPos(ImVec2((ImGui::GetIO().DisplaySize.x - 640), 0));
+			ImGui::SetNextWindowSize(ImVec2(640, 480));
+			ImGui::Begin("Screen", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
+			ImGui::Text("Screen Content");
 			ImGui::End();
 		}
 
