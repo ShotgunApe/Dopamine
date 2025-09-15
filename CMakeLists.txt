@@ -32,8 +32,8 @@ elseif(${TARGET_PLATFORM} STREQUAL "linux")
 
 endif()
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu17 -fpermissive") # fpermissive for imgui
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -fpermissive")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu17 -fpermissive -pthread") # fpermissive for imgui
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -fpermissive -pthread")
 
 include_directories(
         lib/doctest

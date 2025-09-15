@@ -3,9 +3,11 @@
 #include <cstring>
 #include <cstdio>
 #include <elf.h>
+#include <thread>
 
 #include "ee.h"
 #include "text_stream.h"
+#include "vita_int_defines.h"
 
 Emu::Emu() {
     mem_map.resize(32 * 1024 * 1024); // 32MB of memory
@@ -45,7 +47,6 @@ void Emu::debugAssignMemory(const SceUInt32 instruction) {
     }
 }
 
-
 void Emu::process() {
     const SceUInt32 instruction = *reinterpret_cast<SceUInt32*>(&mem_map[ee.r5900.pc]);
 
@@ -68,3 +69,34 @@ void Emu::process() {
             break;
     }
 }
+
+void Emu::processmgr() {
+    while (!OFFLINE) {
+        if (curState == RUNNING) {
+            SceUInt16 steps = 16;
+            do {
+                process();
+                steps--;
+            } while (steps > 0);
+
+            curState = IDLE;
+        }
+        if (curState == IDLE) {
+            // something here?
+        }
+    }
+}
+
+void Emu::setProcessmgr() {
+    m_thread = std::thread(&Emu::processmgr, this);
+    curState = IDLE;
+}
+
+void Emu::setState(const EMU_STATE state) {
+    curState = state;
+}
+
+std::thread Emu::getProcessmgr() {
+    return std::move(m_thread);
+}
+

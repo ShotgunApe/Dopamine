@@ -17,6 +17,7 @@
 #endif
 
 #include <sstream>
+#include <thread>
 
 #include "ui.h"
 #include "emu.h"
@@ -57,9 +58,7 @@ int main(int argc, char *argv[]) {
 	// init emu
 	Emu emu;
 	emu.loadElf(selectedElf);
-
-	// run
-	SceUInt16 steps = 1;
+	emu.setProcessmgr();
 
 	// Main loop
 	bool done = false;
@@ -102,12 +101,14 @@ int main(int argc, char *argv[]) {
 				done = true;
 			}
 
-			if (ImGui::Button("Run")) {
-				do {
-					emu.process();
-					steps--;
-				} while (steps > 0);
+			if (ImGui::Button("Start Disassembler")) {
+				emu.setState(RUNNING);
 			}
+
+			if (ImGui::Button("Stop Disassembler")) {
+				emu.setState(OFFLINE);
+			}
+
 			ImGui::Separator();
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::End();
@@ -126,6 +127,7 @@ int main(int argc, char *argv[]) {
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 			glfwSwapBuffers(window);
 		#endif
+
 	}
 
 	// Cleanup
