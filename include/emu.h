@@ -24,9 +24,12 @@ public:
 
     void process();
     void processmgr();
-    void setProcessmgr();
-    void setState(EMU_STATE state);
+
     std::thread getProcessmgr();
+    void setProcessmgr();
+
+    EMU_STATE getState();
+    void setState(EMU_STATE state);
 
     EmotionEngine ee;
 

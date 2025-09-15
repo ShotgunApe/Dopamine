@@ -81,6 +81,10 @@ int main(int argc, char *argv[]) {
 			CENTERED_CONTROL(ImGui::Text("Disassembly"));
 			ImGui::Separator();
 
+			if (emu.getState() != OFFLINE) {
+				ImGui::TextUnformatted(outputBuffer.str().c_str());
+			}
+
 			ImGui::End();
 		}
 
@@ -99,14 +103,17 @@ int main(int argc, char *argv[]) {
 
 			if (ImGui::Button("Quit")) {
 				done = true;
+				emu.setState(OFFLINE);
 			}
 
 			if (ImGui::Button("Start Disassembler")) {
+				outputBuffer.str("");
+				outputBuffer.clear();
 				emu.setState(RUNNING);
 			}
 
 			if (ImGui::Button("Stop Disassembler")) {
-				emu.setState(OFFLINE);
+				emu.setState(IDLE);
 			}
 
 			ImGui::Separator();

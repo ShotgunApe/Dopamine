@@ -87,16 +87,20 @@ void Emu::processmgr() {
     }
 }
 
-void Emu::setProcessmgr() {
-    m_thread = std::thread(&Emu::processmgr, this);
-    curState = IDLE;
-}
-
-void Emu::setState(const EMU_STATE state) {
-    curState = state;
-}
-
 std::thread Emu::getProcessmgr() {
     return std::move(m_thread);
 }
 
+void Emu::setProcessmgr() {
+    curState = IDLE;
+    m_thread = std::thread(&Emu::processmgr, this);
+}
+
+EMU_STATE Emu::getState() {
+    return curState;
+}
+
+
+void Emu::setState(const EMU_STATE state) {
+    curState = state;
+}
