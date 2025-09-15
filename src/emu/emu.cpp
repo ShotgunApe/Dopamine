@@ -73,7 +73,7 @@ void Emu::process() {
 void Emu::processmgr() {
     while (!OFFLINE) {
         if (curState == RUNNING) {
-            SceUInt16 steps = 16;
+            SceUInt16 steps = 21;
             do {
                 process();
                 steps--;

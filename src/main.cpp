@@ -35,8 +35,8 @@ int main(int argc, char *argv[]) {
 		GLFWwindow* window = nullptr;
 	#else
 		glfwInit();
-		float main_scale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor()); // Valid on GLFW 3.3+ only
-		//float main_scale = 1.0f;
+		float main_scale = ImGui_ImplGlfw_GetContentScaleForMonitor(glfwGetPrimaryMonitor());
+		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 		GLFWwindow* window = glfwCreateWindow(static_cast<int>(960 * main_scale), static_cast<int>(544 * main_scale), "Dopamine", nullptr, nullptr);
 		glfwMakeContextCurrent(window);
 		glfwSwapInterval(1); // Enable vsync
@@ -58,6 +58,7 @@ int main(int argc, char *argv[]) {
 	// init emu
 	Emu emu;
 	emu.loadElf(selectedElf);
+	emu.setState(IDLE);
 	emu.setProcessmgr();
 
 	// Main loop
@@ -98,8 +99,9 @@ int main(int argc, char *argv[]) {
 
 		// debug window
 		{
-			ImGui::Begin("TestOutput");
-			ImGui::TextUnformatted(outputBuffer.str().c_str());
+			ImGui::SetNextWindowPos(ImVec2(320, 480));
+			ImGui::SetNextWindowSize(ImVec2(640, 170));
+			ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
 
 			if (ImGui::Button("Quit")) {
 				done = true;
@@ -116,8 +118,6 @@ int main(int argc, char *argv[]) {
 				emu.setState(IDLE);
 			}
 
-			ImGui::Separator();
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			ImGui::End();
 		}
 
