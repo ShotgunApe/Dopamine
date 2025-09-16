@@ -2,7 +2,7 @@
 
 <p align=center> WIP R5900 Disassembler for PS Vita </p>
 
-![A Screenshot of the application.](https://i.imgur.com/B3grL7x.png)
+![A Screenshot of the application.](https://i.imgur.com/5i6wlAy.png)
 
 ### Building 
 1. `sudo apt-get install make git openssh-client bzip2 wget curl xz-utils ninja-build cmake python3 libgl1-mesa-dev libglu1-mesa-dev`

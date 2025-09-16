@@ -73,16 +73,16 @@ void Emu::process() {
 void Emu::processmgr() {
     while (!OFFLINE) {
         if (curState == RUNNING) {
-            SceUInt16 steps = 21;
-            do {
-                process();
-                steps--;
-            } while (steps > 0);
-
+            process();
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
+        if (curState == STEPPING) {
+            process();
             curState = IDLE;
         }
         if (curState == IDLE) {
             // something here?
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
         }
     }
 }
@@ -94,6 +94,7 @@ std::thread Emu::getProcessmgr() {
 void Emu::setProcessmgr() {
     curState = IDLE;
     m_thread = std::thread(&Emu::processmgr, this);
+    m_thread.detach();
 }
 
 EMU_STATE Emu::getState() {

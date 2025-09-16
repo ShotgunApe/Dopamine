@@ -11,6 +11,7 @@
 enum EMU_STATE {
     OFFLINE,
     RUNNING,
+    STEPPING,
     IDLE
 };
 

@@ -108,14 +108,24 @@ int main(int argc, char *argv[]) {
 				emu.setState(OFFLINE);
 			}
 
+			ImGui::SameLine();
+
 			if (ImGui::Button("Start Disassembler")) {
 				outputBuffer.str("");
 				outputBuffer.clear();
 				emu.setState(RUNNING);
 			}
 
+			ImGui::SameLine();
+
 			if (ImGui::Button("Stop Disassembler")) {
 				emu.setState(IDLE);
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Step Disassembler")) {
+				emu.setState(STEPPING);
 			}
 
 			ImGui::End();

@@ -95,7 +95,8 @@ void EmotionEngine::R5900::rType(SceUInt32 instruction) {
             break;
         case (0x0C):
             printf("0x%08x SYSCALL\n");
-            pc = 0x80000180;
+            // TODO: set pc and start executing bios from that area of memory
+            //pc = 0x80000180;
             // TODO: set COP0.Cause to 08h (whatever that means)
             HLEBios::processSyscall();
             break;
