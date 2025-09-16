@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 	Frontend ui;
 	Frontend::initFrontend(*window);
 
-	constexpr ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 	// init test
 	doctest::Context context;
