@@ -102,7 +102,8 @@ if(${TARGET_PLATFORM} STREQUAL "vita")
           SceShaccCgExt
           taihen_stub
           SceShaccCg_stub
-  )
+          SceKernelThreadMgr_stub
+    )
 
   vita_create_self(${PROJECT_NAME}.self ${PROJECT_NAME})
 

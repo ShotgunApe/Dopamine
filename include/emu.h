@@ -2,8 +2,13 @@
 #define EMU_H
 
 #include <atomic>
-#include <thread>
 #include <vector>
+
+#ifdef __vita__
+    #include <psp2/kernel/threadmgr/thread.h>
+#else
+    #include <thread>
+#endif
 
 #include "file.h"
 #include "ee.h"
@@ -25,8 +30,14 @@ public:
 
     void process();
     void processmgr();
+    #ifdef __vita__
+        static int processmgrEntry(SceSize args, void* argp);
+    #endif
 
-    std::thread getProcessmgr();
+    template<typename T>
+    T&& getProcessmgr() {
+        return static_cast<T&&>(m_thread);
+    }
     void setProcessmgr();
 
     EMU_STATE getState();
@@ -37,7 +48,12 @@ public:
 private:
     std::atomic<EMU_STATE> curState;
     std::vector<unsigned char> mem_map;
-    std::thread m_thread;
+
+    #ifdef __vita__
+        SceUID m_thread;
+    #else
+        std::thread m_thread;
+    #endif
 };
 
 #endif

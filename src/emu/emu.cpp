@@ -1,13 +1,18 @@
 #include "emu.h"
 
+#ifdef __vita__
+    #include <psp2/kernel/threadmgr/thread.h>
+#else
+    #include <thread>
+    #include "vita_int_defines.h"
+#endif
+
 #include <cstring>
 #include <cstdio>
 #include <elf.h>
-#include <thread>
 
 #include "ee.h"
 #include "text_stream.h"
-#include "vita_int_defines.h"
 
 Emu::Emu() {
     mem_map.resize(32 * 1024 * 1024); // 32MB of memory
@@ -74,27 +79,49 @@ void Emu::processmgr() {
     while (!OFFLINE) {
         if (curState == RUNNING) {
             process();
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            #ifdef __vita__
+                sceKernelDelayThread(10000);
+            #else
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            #endif
         }
         if (curState == STEPPING) {
             process();
             curState = IDLE;
         }
         if (curState == IDLE) {
-            // something here?
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            #ifdef __vita__
+                sceKernelDelayThread(10000);
+            #else
+                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            #endif
         }
     }
 }
 
-std::thread Emu::getProcessmgr() {
-    return std::move(m_thread);
+#ifdef __vita__
+int Emu::processmgrEntry(SceSize args, void* argp) {
+    auto emu = static_cast<Emu*>(argp);
+    emu->curState = IDLE;
+    emu->processmgr();
+    return 0;
 }
+#endif
 
 void Emu::setProcessmgr() {
     curState = IDLE;
-    m_thread = std::thread(&Emu::processmgr, this);
-    m_thread.detach();
+
+    #ifdef __vita__
+        m_thread = sceKernelCreateThread("Emulator Core", &Emu::processmgrEntry, 0x10000100, 0x10000, 0, 0, nullptr);
+        if (m_thread >= 0) {
+            sceKernelStartThread(m_thread, sizeof(*this), this);
+        } else {
+        printf("Failed to create thread: 0x%08X\n", m_thread);
+    }
+    #else
+        m_thread = std::thread(&Emu::processmgr, this);
+        m_thread.detach();
+    #endif
 }
 
 EMU_STATE Emu::getState() {

@@ -9,6 +9,7 @@
 	#include <vitaGL.h>
 	struct GLFWwindow;			// Dummy struct to pass nullptr to function
 #else
+	#include <thread>
 	#include <imgui.h>
 	#include <GLFW/glfw3.h>
 	#include "backends/imgui_impl_glfw.h"
@@ -17,7 +18,6 @@
 #endif
 
 #include <sstream>
-#include <thread>
 
 #include "ui.h"
 #include "emu.h"
@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
 	Emu emu;
 	emu.loadElf(selectedElf);
 	emu.setState(IDLE);
-	emu.setProcessmgr();
+	emu.setProcessmgr(); // TODO: make vita equivalent for threads
 
 	// Main loop
 	bool done = false;
@@ -159,7 +159,7 @@ int main(int argc, char *argv[]) {
 	ImGui::DestroyContext();
 
 	#ifdef __vita__
-		sceKernelExitProcess(0);
+		sceKernelExitProcess(1);
 	#endif
 	return 0;
 }
