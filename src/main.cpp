@@ -12,6 +12,7 @@
 #else
 	#include <thread>
 	#include <imgui.h>
+	#include <imfilebrowser.h>
 	#include <GLFW/glfw3.h>
 	#include "backends/imgui_impl_glfw.h"
 	#include "backends/imgui_impl_opengl3.h"
@@ -54,6 +55,8 @@ int main(int argc, char *argv[]) {
 	Frontend::LoadTextureFromFile("../src/ui/gfx/textures/dopamine.png", &my_image_texture, &my_image_width, &my_image_height);
 
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+	ImGui::FileBrowser fileDialog;
 
 	// init test
 	doctest::Context context;
@@ -108,6 +111,17 @@ int main(int argc, char *argv[]) {
 			ImGui::End();
 		}
 
+		// file dialogue
+		{
+			fileDialog.Display();
+
+			if(fileDialog.HasSelected())
+			{
+				std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
+				fileDialog.ClearSelected();
+			}
+		}
+
 		// Options
 		{
 			ImGui::SetNextWindowPos(ImVec2(320, 480));
@@ -115,7 +129,7 @@ int main(int argc, char *argv[]) {
 			ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
 
 			if (ImGui::Button("Select File")) {
-				// load file menu
+				fileDialog.Open();
 			}
 
 			ImGui::SameLine();
