@@ -5,6 +5,7 @@
 
 #ifdef __vita__
     struct GLFWwindow;          // Dummy struct to pass nullptr to function
+    #include <vitaGL.h>
 #else
     #include <GLFW/glfw3.h>
 #endif

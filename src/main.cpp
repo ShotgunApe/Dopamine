@@ -12,13 +12,13 @@
 #else
 	#include <thread>
 	#include <imgui.h>
-	#include <imfilebrowser.h>
 	#include <GLFW/glfw3.h>
 	#include "backends/imgui_impl_glfw.h"
 	#include "backends/imgui_impl_opengl3.h"
 	#include "vita_int_defines.h"
 #endif
 
+#include <imfilebrowser.h>
 #include <sstream>
 
 #include "ui.h"
@@ -104,7 +104,7 @@ int main(int argc, char *argv[]) {
 			ImGui::SetNextWindowPos(ImVec2((ImGui::GetIO().DisplaySize.x - 640), 0));
 			ImGui::SetNextWindowSize(ImVec2(640, 480));
 			ImGui::Begin("Screen", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
-			CENTERED_CONTROL(ImGui::Image(static_cast<ImTextureID>(static_cast<intptr_t>(my_image_texture)), ImVec2(my_image_width * 0.5, my_image_height * 0.5), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 0.25f), ImVec4(0, 0, 0, 0)), ImGui::GetIO().DisplaySize.y - (340 - image_size.y)); // gross
+			CENTERED_CONTROL(ImGui::Image((ImTextureID)(static_cast<intptr_t>(my_image_texture)), ImVec2(my_image_width * 0.5, my_image_height * 0.5), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 0.25f), ImVec4(0, 0, 0, 0)), ImGui::GetIO().DisplaySize.y - (340 - image_size.y)); // gross
 			ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 64)); // Red text with 50% opacity (0-255 range for alpha)
 			CENTERED_CONTROL(ImGui::Text("Dopamine"));
 			ImGui::PopStyleColor();
