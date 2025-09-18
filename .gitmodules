@@ -12,4 +12,4 @@
 	url = git@github.com:nothings/stb.git
 [submodule "lib/imgui-filebrowser"]
 	path = lib/imgui-filebrowser
-	url = git@github.com:AirGuanZ/imgui-filebrowser.git
+	url = git@github.com:ShotgunApe/imgui-filebrowser.git
