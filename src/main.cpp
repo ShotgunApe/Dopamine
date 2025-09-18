@@ -102,18 +102,20 @@ int main(int argc, char *argv[]) {
 			ImGui::SetNextWindowSize(ImVec2(640, 480));
 			ImGui::Begin("Screen", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
 			CENTERED_CONTROL(ImGui::Image(static_cast<ImTextureID>(static_cast<intptr_t>(my_image_texture)), ImVec2(my_image_width * 0.5, my_image_height * 0.5), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 0.25f), ImVec4(0, 0, 0, 0)), ImGui::GetIO().DisplaySize.y - (340 - image_size.y)); // gross
+			ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 64)); // Red text with 50% opacity (0-255 range for alpha)
+			CENTERED_CONTROL(ImGui::Text("Dopamine"));
+			ImGui::PopStyleColor();
 			ImGui::End();
 		}
 
-		// debug window
+		// Options
 		{
 			ImGui::SetNextWindowPos(ImVec2(320, 480));
 			ImGui::SetNextWindowSize(ImVec2(640, 170));
 			ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
 
-			if (ImGui::Button("Quit")) {
-				done = true;
-				emu.setState(OFFLINE);
+			if (ImGui::Button("Select File")) {
+				// load file menu
 			}
 
 			ImGui::SameLine();
@@ -134,6 +136,13 @@ int main(int argc, char *argv[]) {
 
 			if (ImGui::Button("Step Disassembler")) {
 				emu.setState(STEPPING);
+			}
+
+			ImGui::SameLine();
+
+			if (ImGui::Button("Quit")) {
+				done = true;
+				emu.setState(OFFLINE);
 			}
 
 			ImGui::End();
