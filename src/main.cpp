@@ -57,18 +57,17 @@ int main(int argc, char *argv[]) {
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 	ImGui::FileBrowser fileDialog;
+	fileDialog.SetTypeFilters({ ".elf"});
 
 	// init test
 	doctest::Context context;
 	context.applyCommandLine(argc, argv);
 	context.run();
 
-	// select a file
-	File selectedElf = ui.selectFile();
+
 
 	// init emu
 	Emu emu;
-	emu.loadElf(selectedElf);
 	emu.setState(IDLE);
 	emu.setProcessmgr(); // TODO: make vita equivalent for threads
 
@@ -115,9 +114,10 @@ int main(int argc, char *argv[]) {
 		{
 			fileDialog.Display();
 
-			if(fileDialog.HasSelected())
-			{
+			if(fileDialog.HasSelected()) {
 				std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
+				File selectedElf = ui.selectFile(fileDialog.GetSelected().string());
+				emu.loadElf(selectedElf);
 				fileDialog.ClearSelected();
 			}
 		}

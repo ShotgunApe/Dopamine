@@ -91,8 +91,8 @@ bool Frontend::LoadTextureFromFile(const char* file_name, GLuint* out_texture, i
     return ret;
 }
 
-File Frontend::selectFile() {
+File Frontend::selectFile(const std::string& filepath) {
     // Hardcode that thang for now
-    elf_loader.setElf();
+    elf_loader.setElf(filepath);
     return elf_loader;
 }

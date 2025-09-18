@@ -24,11 +24,10 @@ std::vector<unsigned char> &File::getElf() {
     return open_file;
 }
 
-void File::setElf() {
-    // Hard-code .elf to open, for now
+void File::setElf(const std::string& filepath) {
 
     #ifdef __vita__
-    const SceUID fd = sceIoOpen("ux0:/Dopamine/demo2a.elf", SCE_O_RDONLY, 0777);
+    const SceUID fd = sceIoOpen(filepath, SCE_O_RDONLY, 0777);
     if (fd < 0 ) {
         // Error code in fd, for example no open filehandle left (0x80010018)
         printf("demo2a.elf open error, exiting\n");
@@ -52,7 +51,7 @@ void File::setElf() {
         printf("%u bytes written to memory\n\n",open_file.size());
     }
     #else
-    std::ifstream file("../files/demo2a.elf", std::ios::binary);
+    std::ifstream file(filepath, std::ios::binary);
     if (!file.is_open()) {
         printf("demo2a.elf open error, exiting\n");
         std::cout << "demo2a.elf open error, exiting" << std::endl;
