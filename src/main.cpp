@@ -2,6 +2,7 @@
 #define DOCTEST_CONFIG_NO_MULTI_LANE_ATOMICS
 #define DOCTEST_CONFIG_NO_POSIX_SIGNALS
 #define DOCTEST_CONFIG_IMPLEMENT
+#define IMGUI_DEFINE_MATH_OPERATORS
 
 #ifdef __vita__
 	#include <psp2/kernel/processmgr.h>
@@ -45,6 +46,13 @@ int main(int argc, char *argv[]) {
 	Frontend ui;
 	Frontend::initFrontend(*window);
 
+	// place some ui elements into memory
+	int my_image_width = 0;
+	int my_image_height = 0;
+	GLuint my_image_texture = 0;
+	auto image_size = ImVec2(my_image_width * 0.5, my_image_height * 0.5);
+	Frontend::LoadTextureFromFile("../src/ui/gfx/textures/dopamine.png", &my_image_texture, &my_image_width, &my_image_height);
+
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 	// init test
@@ -78,7 +86,6 @@ int main(int argc, char *argv[]) {
 			ImGui::SetNextWindowPos(ImVec2(0, 0));
 			ImGui::SetNextWindowSize(ImVec2(320, 650));
 			ImGui::Begin("Sidebar", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
-
 			CENTERED_CONTROL(ImGui::Text("Disassembly"));
 			ImGui::Separator();
 
@@ -94,6 +101,7 @@ int main(int argc, char *argv[]) {
 			ImGui::SetNextWindowPos(ImVec2((ImGui::GetIO().DisplaySize.x - 640), 0));
 			ImGui::SetNextWindowSize(ImVec2(640, 480));
 			ImGui::Begin("Screen", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
+			CENTERED_CONTROL(ImGui::Image(static_cast<ImTextureID>(static_cast<intptr_t>(my_image_texture)), ImVec2(my_image_width * 0.5, my_image_height * 0.5), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 0.25f), ImVec4(0, 0, 0, 0)), ImGui::GetIO().DisplaySize.y - (340 - image_size.y)); // gross
 			ImGui::End();
 		}
 
