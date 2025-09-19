@@ -53,7 +53,12 @@ int main(int argc, char *argv[]) {
 	int my_image_height = 0;
 	GLuint my_image_texture = 0;
 	auto image_size = ImVec2(my_image_width * 0.5, my_image_height * 0.5);
-	Frontend::LoadTextureFromFile("../src/ui/gfx/textures/dopamine.png", &my_image_texture, &my_image_width, &my_image_height);
+	// TODO: change this to use a single relative filepath??
+	#ifdef __vita__
+		Frontend::LoadTextureFromFile("ux0:/Dopamine/gfx/dopamine.png", &my_image_texture, &my_image_width, &my_image_height);
+	#else
+		Frontend::LoadTextureFromFile("../src/ui/gfx/textures/dopamine.png", &my_image_texture, &my_image_width, &my_image_height);
+	#endif
 
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 

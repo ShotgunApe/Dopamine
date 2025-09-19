@@ -26,8 +26,10 @@ void Frontend::initFrontend(GLFWwindow& window) {
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
     #ifdef __vita__
+        io.MouseDrawCursor = false;
         ImGui_ImplVitaGL_Init();
-        ImGui_ImplVitaGL_TouchUsage(true);
+        ImGui_ImplVitaGL_MouseStickUsage(false);
+        ImGui_ImplVitaGL_TouchUsage(false);
         ImGui_ImplVitaGL_UseIndirectFrontTouch(false);
         ImGui_ImplVitaGL_UseRearTouch(false);
         ImGui_ImplVitaGL_GamepadUsage(true);

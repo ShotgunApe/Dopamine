@@ -1,8 +1,8 @@
 <h2 align=center> Dopamine </h2>
 
-<p align=center> WIP R5900 Disassembler for PS Vita </p>
+<p align=center> WIP R5900 Disassembler for Linux/PS Vita </p>
 
-![A Screenshot of the application.](https://i.imgur.com/5i6wlAy.png)
+![A Screenshot of the application.](https://i.imgur.com/hAIwTBI.png)
 
 ### Building 
 1. `sudo apt-get install make git openssh-client bzip2 wget curl xz-utils ninja-build cmake python3 libgl1-mesa-dev libglu1-mesa-dev`
