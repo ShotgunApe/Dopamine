@@ -13,6 +13,3 @@
 [submodule "lib/imgui-filebrowser-vita"]
 	path = lib/imgui-filebrowser-vita
 	url = git@github.com:ShotgunApe/imgui-filebrowser-vita.git
-[submodule "imgui-filebrowser"]
-	path = imgui-filebrowser
-	url = git@github.com:AirGuanZ/imgui-filebrowser.git
