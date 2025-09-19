@@ -12,13 +12,13 @@
 #else
 	#include <thread>
 	#include <imgui.h>
+	#include <imfilebrowser.h>
 	#include <GLFW/glfw3.h>
 	#include "backends/imgui_impl_glfw.h"
 	#include "backends/imgui_impl_opengl3.h"
 	#include "vita_int_defines.h"
 #endif
 
-#include <imfilebrowser.h>
 #include <sstream>
 
 #include "ui.h"
@@ -55,6 +55,7 @@ int main(int argc, char *argv[]) {
 	Frontend::LoadTextureFromFile("../src/ui/gfx/textures/dopamine.png", &my_image_texture, &my_image_width, &my_image_height);
 
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
 
 	ImGui::FileBrowser fileDialog;
 	fileDialog.SetTypeFilters({ ".elf"});

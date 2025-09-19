@@ -27,7 +27,7 @@ std::vector<unsigned char> &File::getElf() {
 void File::setElf(const std::string& filepath) {
 
     #ifdef __vita__
-    const SceUID fd = sceIoOpen(filepath, SCE_O_RDONLY, 0777);
+    const SceUID fd = sceIoOpen(filepath.c_str(), SCE_O_RDONLY, 0777);
     if (fd < 0 ) {
         // Error code in fd, for example no open filehandle left (0x80010018)
         printf("demo2a.elf open error, exiting\n");
