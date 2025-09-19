@@ -7,9 +7,9 @@
 #ifdef __vita__
 	#include <psp2/kernel/processmgr.h>
 	#include <imgui_vita.h>
-	#include <imfilebrowser-vita.h>
 	#include <vitaGL.h>
 	struct GLFWwindow;			// Dummy struct to pass nullptr to function
+	struct Filebrowser;
 #else
 	#include <thread>
 	#include <imgui.h>
@@ -57,9 +57,12 @@ int main(int argc, char *argv[]) {
 
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-
-	ImGui::FileBrowser fileDialog;
-	fileDialog.SetTypeFilters({ ".elf"});
+	#ifdef __vita__
+		// TODO: Implement vita filebrowser
+	#else
+		ImGui::FileBrowser fileDialog;
+		fileDialog.SetTypeFilters({ ".elf"});
+	#endif
 
 	// init test
 	doctest::Context context;
@@ -112,6 +115,8 @@ int main(int argc, char *argv[]) {
 
 		// file dialogue
 		{
+		#ifdef __vita__
+		#else
 			fileDialog.Display();
 
 			if(fileDialog.HasSelected()) {
@@ -120,6 +125,7 @@ int main(int argc, char *argv[]) {
 				emu.loadElf(selectedElf);
 				fileDialog.ClearSelected();
 			}
+		#endif
 		}
 
 		// Options
@@ -129,7 +135,12 @@ int main(int argc, char *argv[]) {
 			ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
 
 			if (ImGui::Button("Select File")) {
+			#ifdef __vita__
+				File selectedElf = ui.selectFile("ux0:/Dopamine/demo2a.elf");
+				emu.loadElf(selectedElf);
+			#else
 				fileDialog.Open();
+			#endif
 			}
 
 			ImGui::SameLine();
