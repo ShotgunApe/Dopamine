@@ -7,6 +7,7 @@
 #ifdef __vita__
 	#include <psp2/kernel/processmgr.h>
 	#include <imgui_vita.h>
+	#include <imfilebrowser-vita.h>
 	#include <vitaGL.h>
 	struct GLFWwindow;			// Dummy struct to pass nullptr to function
 #else

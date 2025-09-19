@@ -38,12 +38,12 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -fpermissive -pthread")
 include_directories(
         lib/doctest
         lib/stb
-        lib/imgui-filebrowser
         include
 )
 
 if(${TARGET_PLATFORM} STREQUAL "vita")
   include_directories(lib/imgui-vita)
+  include_directories(lib/imgui-filebrowser-vita)
   add_library(imgui_platform OBJECT
           lib/imgui-vita/imgui.cpp
           lib/imgui-vita/imgui_draw.cpp
@@ -54,6 +54,7 @@ if(${TARGET_PLATFORM} STREQUAL "vita")
   target_compile_options(imgui_platform PRIVATE -include alloca.h) # jank solution to fix compile error on linux(?)
 
 elseif(${TARGET_PLATFORM} STREQUAL "linux")
+  include_directories(lib/imgui-filebrowser)
   include_directories(lib/imgui)
   add_library(imgui_platform OBJECT
           lib/imgui/imgui.cpp
