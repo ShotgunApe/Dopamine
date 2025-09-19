@@ -66,8 +66,6 @@ int main(int argc, char *argv[]) {
 	context.applyCommandLine(argc, argv);
 	context.run();
 
-
-
 	// init emu
 	Emu emu;
 	emu.setState(IDLE);

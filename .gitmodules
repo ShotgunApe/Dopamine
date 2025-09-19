@@ -10,9 +10,6 @@
 [submodule "lib/stb"]
 	path = lib/stb
 	url = git@github.com:nothings/stb.git
-[submodule "lib/imgui-filebrowser-vita"]
-	path = lib/imgui-filebrowser-vita
-	url = git@github.com:ShotgunApe/imgui-filebrowser-vita.git
 [submodule "lib/imgui-filebrowser"]
 	path = lib/imgui-filebrowser
 	url = git@github.com:AirGuanZ/imgui-filebrowser.git
