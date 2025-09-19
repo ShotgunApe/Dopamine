@@ -84,6 +84,7 @@ int main(int argc, char *argv[]) {
 	while (!done) {
 		#ifdef __vita__
 			ImGui_ImplVitaGL_NewFrame();
+			ImGui::SetMouseCursor(ImGuiMouseCursor_None);
 		#else
 			glfwPollEvents();
 			ImGui_ImplOpenGL3_NewFrame();
