@@ -64,6 +64,7 @@ int main(int argc, char *argv[]) {
 
 	#ifdef __vita__
 		// TODO: Implement vita filebrowser
+		bool vitaFileDialogOpen = false;
 	#else
 		ImGui::FileBrowser fileDialog;
 		fileDialog.SetTypeFilters({ ".elf"});
@@ -122,6 +123,18 @@ int main(int argc, char *argv[]) {
 		// file dialogue
 		{
 		#ifdef __vita__
+			if (vitaFileDialogOpen) {
+				{
+					ImGui::SetNextWindowPos(ImVec2(40, 50));
+					ImGui::SetNextWindowSize(ImVec2(880, 444));
+					ImGui::Begin("Select File", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+					if (ImGui::Button("ok")) {
+						File selectedElf = ui.selectFile("ux0:/Dopamine/demo2a.elf");
+						emu.loadElf(selectedElf);
+						vitaFileDialogOpen = false;
+					}
+				}
+			}
 		#else
 			fileDialog.Display();
 
@@ -142,8 +155,7 @@ int main(int argc, char *argv[]) {
 
 			if (ImGui::Button("Select File")) {
 			#ifdef __vita__
-				File selectedElf = ui.selectFile("ux0:/Dopamine/demo2a.elf");
-				emu.loadElf(selectedElf);
+				vitaFileDialogOpen = true;
 			#else
 				fileDialog.Open();
 			#endif
