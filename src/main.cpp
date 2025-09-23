@@ -120,33 +120,6 @@ int main(int argc, char *argv[]) {
 			ImGui::End();
 		}
 
-		// file dialogue
-		{
-		#ifdef __vita__
-			if (vitaFileDialogOpen) {
-				{
-					ImGui::SetNextWindowPos(ImVec2(40, 50));
-					ImGui::SetNextWindowSize(ImVec2(880, 444));
-					ImGui::Begin("Select File", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-					if (ImGui::Button("ok")) {
-						File selectedElf = ui.selectFile("ux0:/Dopamine/demo2a.elf");
-						emu.loadElf(selectedElf);
-						vitaFileDialogOpen = false;
-					}
-				}
-			}
-		#else
-			fileDialog.Display();
-
-			if(fileDialog.HasSelected()) {
-				std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
-				File selectedElf = ui.selectFile(fileDialog.GetSelected().string());
-				emu.loadElf(selectedElf);
-				fileDialog.ClearSelected();
-			}
-		#endif
-		}
-
 		// Options
 		{
 			ImGui::SetNextWindowPos(ImVec2(320, 480));
@@ -189,6 +162,36 @@ int main(int argc, char *argv[]) {
 			}
 
 			ImGui::End();
+		}
+
+		// file dialogue
+		{
+			#ifdef __vita__
+				if (vitaFileDialogOpen) {
+					ImGui::OpenPopup("SelectFile");
+				}
+				ImGui::SetNextWindowPos(ImVec2(50, 40));
+				ImGui::SetNextWindowSize(ImVec2(860, 464));
+
+				if (ImGui::BeginPopupModal("SelectFile")) {
+					if (ImGui::Button("ok")) {
+						File selectedElf = ui.selectFile("ux0:/Dopamine/demo2a.elf");
+						emu.loadElf(selectedElf);
+						ImGui::CloseCurrentPopup();
+						vitaFileDialogOpen = false;
+					}
+					ImGui::EndPopup();
+				}
+			#else
+				fileDialog.Display();
+
+				if(fileDialog.HasSelected()) {
+					std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
+					File selectedElf = ui.selectFile(fileDialog.GetSelected().string());
+					emu.loadElf(selectedElf);
+					fileDialog.ClearSelected();
+				}
+			#endif
 		}
 
 		// Rendering
