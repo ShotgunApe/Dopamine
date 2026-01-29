@@ -4,15 +4,19 @@
 
 ![A Screenshot of the application.](https://i.imgur.com/hAIwTBI.png)
 
-### Building 
+### Building
+These instructions assume you are using a Debian-based distribution. Package names may vary slightly for other distributions.
+
 1. `sudo apt-get install make git openssh-client bzip2 wget curl xz-utils ninja-build cmake python3 libgl1-mesa-dev libglu1-mesa-dev`
-2. Install [Vita SDK](https://vitasdk.org/) and add it to your `$PATH`
+2. Install [Vita SDK](https://vitasdk.org/) and add it to your `$PATH` (optional if not building for PS Vita)
 3. `git clone --recursive git@github.com:ShotgunApe/Dopamine.git`
 4. `cd Dopamine`
 5. `mkdir build && cd build`
 6. `cmake .. -DTARGET_PLATFORM=vita && make` or open `CMakeLists.txt` in your favorite IDE
 
-If building for Linux, set `-DTARGET_PLATFORM=linux`
+If building for Linux, set `-DTARGET_PLATFORM=linux`.
+
+If you run into issues cloning submodules, ensure you have a working SSH key with GitHub, or add the dependencies manually to `./lib`.
 
 ### Running
 Dopamine requires that `libshacccg.suprx` is extracted and decrypted on your console. This can be done using [ShaRKF00D](https://github.com/OsirizX/ShaRKF00D/releases/tag/1.3).
