@@ -26,10 +26,12 @@ void Frontend::initFrontend(GLFWwindow& window) {
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
     #ifdef __vita__
+        io.MouseDrawCursor = false;
         ImGui_ImplVitaGL_Init();
-        ImGui_ImplVitaGL_TouchUsage(true);
+        ImGui_ImplVitaGL_MouseStickUsage(false);
+        ImGui_ImplVitaGL_TouchUsage(false);
         ImGui_ImplVitaGL_UseIndirectFrontTouch(false);
-        ImGui_ImplVitaGL_UseRearTouch(true);
+        ImGui_ImplVitaGL_UseRearTouch(false);
         ImGui_ImplVitaGL_GamepadUsage(true);
     #else
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableSetMousePos;
@@ -83,16 +85,16 @@ bool Frontend::LoadTextureFromFile(const char* file_name, GLuint* out_texture, i
     if (file_size == -1)
         return false;
     fseek(f, 0, SEEK_SET);
-    void* file_data = IM_ALLOC(file_size);
+    void* file_data = ImGui::MemAlloc(file_size);
     fread(file_data, 1, file_size, f);
     fclose(f);
     bool ret = LoadTextureFromMemory(file_data, file_size, out_texture, out_width, out_height);
-    IM_FREE(file_data);
+    ImGui::MemFree(file_data);
     return ret;
 }
 
-File Frontend::selectFile() {
+File Frontend::selectFile(const std::string& filepath) {
     // Hardcode that thang for now
-    elf_loader.setElf();
+    elf_loader.setElf(filepath);
     return elf_loader;
 }

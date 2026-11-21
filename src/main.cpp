@@ -9,9 +9,11 @@
 	#include <imgui_vita.h>
 	#include <vitaGL.h>
 	struct GLFWwindow;			// Dummy struct to pass nullptr to function
+	struct Filebrowser;
 #else
 	#include <thread>
 	#include <imgui.h>
+	#include <imfilebrowser.h>
 	#include <GLFW/glfw3.h>
 	#include "backends/imgui_impl_glfw.h"
 	#include "backends/imgui_impl_opengl3.h"
@@ -51,21 +53,30 @@ int main(int argc, char *argv[]) {
 	int my_image_height = 0;
 	GLuint my_image_texture = 0;
 	auto image_size = ImVec2(my_image_width * 0.5, my_image_height * 0.5);
-	Frontend::LoadTextureFromFile("../src/ui/gfx/textures/dopamine.png", &my_image_texture, &my_image_width, &my_image_height);
+	// TODO: change this to use a single relative filepath??
+	#ifdef __vita__
+		Frontend::LoadTextureFromFile("ux0:/Dopamine/gfx/dopamine.png", &my_image_texture, &my_image_width, &my_image_height);
+	#else
+		Frontend::LoadTextureFromFile("../src/ui/gfx/textures/dopamine.png", &my_image_texture, &my_image_width, &my_image_height);
+	#endif
 
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+	#ifdef __vita__
+		// TODO: Implement vita filebrowser
+		bool vitaFileDialogOpen = false;
+	#else
+		ImGui::FileBrowser fileDialog;
+		fileDialog.SetTypeFilters({ ".elf"});
+	#endif
 
 	// init test
 	doctest::Context context;
 	context.applyCommandLine(argc, argv);
 	context.run();
 
-	// select a file
-	File selectedElf = ui.selectFile();
-
 	// init emu
 	Emu emu;
-	emu.loadElf(selectedElf);
 	emu.setState(IDLE);
 	emu.setProcessmgr(); // TODO: make vita equivalent for threads
 
@@ -74,6 +85,7 @@ int main(int argc, char *argv[]) {
 	while (!done) {
 		#ifdef __vita__
 			ImGui_ImplVitaGL_NewFrame();
+			ImGui::SetMouseCursor(ImGuiMouseCursor_None);
 		#else
 			glfwPollEvents();
 			ImGui_ImplOpenGL3_NewFrame();
@@ -101,7 +113,7 @@ int main(int argc, char *argv[]) {
 			ImGui::SetNextWindowPos(ImVec2((ImGui::GetIO().DisplaySize.x - 640), 0));
 			ImGui::SetNextWindowSize(ImVec2(640, 480));
 			ImGui::Begin("Screen", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
-			CENTERED_CONTROL(ImGui::Image(static_cast<ImTextureID>(static_cast<intptr_t>(my_image_texture)), ImVec2(my_image_width * 0.5, my_image_height * 0.5), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 0.25f), ImVec4(0, 0, 0, 0)), ImGui::GetIO().DisplaySize.y - (340 - image_size.y)); // gross
+			CENTERED_CONTROL(ImGui::Image((ImTextureID)(static_cast<intptr_t>(my_image_texture)), ImVec2(my_image_width * 0.5, my_image_height * 0.5), ImVec2(0, 0), ImVec2(1, 1), ImVec4(1, 1, 1, 0.25f), ImVec4(0, 0, 0, 0)), ImGui::GetIO().DisplaySize.y - (340 - image_size.y)); // gross
 			ImGui::PushStyleColor(ImGuiCol_Text, IM_COL32(255, 255, 255, 64)); // Red text with 50% opacity (0-255 range for alpha)
 			CENTERED_CONTROL(ImGui::Text("Dopamine"));
 			ImGui::PopStyleColor();
@@ -115,7 +127,11 @@ int main(int argc, char *argv[]) {
 			ImGui::Begin("Menu", nullptr, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar);
 
 			if (ImGui::Button("Select File")) {
-				// load file menu
+			#ifdef __vita__
+				vitaFileDialogOpen = true;
+			#else
+				fileDialog.Open();
+			#endif
 			}
 
 			ImGui::SameLine();
@@ -146,6 +162,36 @@ int main(int argc, char *argv[]) {
 			}
 
 			ImGui::End();
+		}
+
+		// file dialogue
+		{
+			#ifdef __vita__
+				if (vitaFileDialogOpen) {
+					ImGui::OpenPopup("SelectFile");
+				}
+				ImGui::SetNextWindowPos(ImVec2(50, 40));
+				ImGui::SetNextWindowSize(ImVec2(860, 464));
+
+				if (ImGui::BeginPopupModal("SelectFile")) {
+					if (ImGui::Button("ok")) {
+						File selectedElf = ui.selectFile("ux0:/Dopamine/demo2a.elf");
+						emu.loadElf(selectedElf);
+						ImGui::CloseCurrentPopup();
+						vitaFileDialogOpen = false;
+					}
+					ImGui::EndPopup();
+				}
+			#else
+				fileDialog.Display();
+
+				if(fileDialog.HasSelected()) {
+					std::cout << "Selected filename" << fileDialog.GetSelected().string() << std::endl;
+					File selectedElf = ui.selectFile(fileDialog.GetSelected().string());
+					emu.loadElf(selectedElf);
+					fileDialog.ClearSelected();
+				}
+			#endif
 		}
 
 		// Rendering

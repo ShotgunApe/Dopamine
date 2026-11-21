@@ -3,13 +3,13 @@
 #ifdef __vita__
     #include <psp2/kernel/threadmgr/thread.h>
 #else
-    #include <thread>
     #include "vita_int_defines.h"
 #endif
 
 #include <cstring>
 #include <cstdio>
 #include <elf.h>
+#include <thread>
 
 #include "ee.h"
 #include "text_stream.h"
@@ -99,29 +99,15 @@ void Emu::processmgr() {
     }
 }
 
-#ifdef __vita__
-int Emu::processmgrEntry(SceSize args, void* argp) {
-    auto emu = static_cast<Emu*>(argp);
-    emu->curState = IDLE;
-    emu->processmgr();
-    return 0;
-}
-#endif
-
 void Emu::setProcessmgr() {
     curState = IDLE;
 
     #ifdef __vita__
-        m_thread = sceKernelCreateThread("Emulator Core", &Emu::processmgrEntry, 0x10000100, 0x10000, 0, 0, nullptr);
-        if (m_thread >= 0) {
-            sceKernelStartThread(m_thread, sizeof(*this), this);
-        } else {
-        printf("Failed to create thread: 0x%08X\n", m_thread);
-    }
-    #else
-        m_thread = std::thread(&Emu::processmgr, this);
-        m_thread.detach();
+        pthread_init();
     #endif
+
+    m_thread = std::thread(&Emu::processmgr, this);
+    m_thread.detach();
 }
 
 EMU_STATE Emu::getState() {
